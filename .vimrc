@@ -9,60 +9,67 @@ set shell=/bin/bash
 
 call plug#begin('~/.vim/plugged')
 
-" Plug 'terryma/vim-smooth-scroll' 		" Smooth scroll
-Plug 'altercation/vim-colors-solarized' " Solarized
-"Plug 'blueyed/vim-diminactive'			" Dim inactive buffers
-
-Plug 'bling/vim-airline'                " Airline
-Plug 'godlygeek/tabular'                " Align text
-Plug 'nathanaelkane/vim-indent-guides'	" Indent guides
-
-Plug 'scrooloose/syntastic'				" Syntax checker
-Plug 'ap/vim-css-color'                 " CSS color
-Plug 'hail2u/vim-css3-syntax'           " CSS
-Plug 'othree/html5.vim'				    " HTML
-Plug 'digitaltoad/vim-jade'             " Jade
-Plug 'pangloss/vim-javascript'			" JS
-Plug 'mxw/vim-jsx'						" JSX
-Plug 'cakebaker/scss-syntax.vim'        " SCSS
-
-Plug 'schickling/vim-bufonly'			" Close all but current buffer
-
-Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
-Plug 'FelikZ/ctrlp-py-matcher'          " CtrlP performance enhancement
-
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fzf
-
+"
+"	Code efficiencies
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }			" You complete me
 Plug 'jiangmiao/auto-pairs'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 Plug 'mattn/emmet-vim'                	" Emmet
-Plug 'matze/vim-move'					" Vim move
 Plug 'ntpeters/vim-better-whitespace'	" Remove whitespace
+Plug 't9md/vim-textmanip'				" Text manipulation
+Plug 'terryma/vim-multiple-cursors'     " Multi cursors : )
+Plug 'tpope/vim-fugitive'				" Git
+Plug 'tpope/vim-surround'				" Surround tags
+"Plug 'unblevable/quick-scope'			" Quick scopeing f,F,t
+
+"
+"	File handling
+Plug 'tyru/open-browser.vim'			" Open in Browser
+
+"
+"	Search utilities
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' } " Fzf
+Plug 'FelikZ/ctrlp-py-matcher'          " CtrlP performance
+Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
+
+"
+"	Syntax highlighting
+Plug 'ap/vim-css-color'                 " CSS color
+Plug 'cakebaker/scss-syntax.vim'        " SCSS
+Plug 'digitaltoad/vim-jade'             " Jade
+Plug 'hail2u/vim-css3-syntax'           " CSS
+Plug 'mxw/vim-jsx'						" JSX
+Plug 'othree/html5.vim'				    " HTML
+Plug 'pangloss/vim-javascript'			" JS
+Plug 'scrooloose/syntastic'				" Syntax checker
+
+"
+"	UI enhancements
+Plug 'altercation/vim-colors-solarized' " Solarized
+Plug 'bling/vim-airline'                " Airline
+Plug 'godlygeek/tabular'                " Align text
+Plug 'nathanaelkane/vim-indent-guides'	" Indent guides
+Plug 'schickling/vim-bufonly'			" Close all but current buffer
 Plug 'scrooloose/nerdcommenter'			" Nerd commenter
 Plug 'scrooloose/nerdtree'				" Nerd tree
-Plug 'terryma/vim-multiple-cursors'     " Multi cursors : )
-Plug 'tpope/vim-surround'				" Surround tags
-Plug 'tyru/open-browser.vim'			" Open in Browser
+
 Plug 'vim-scripts/AutoComplPop'			" AutoComlPop menu
 Plug 'wesQ3/vim-windowswap'				" Window swap
 
 call plug#end()            				" required
 
-"""""""""""""""""""""""""""""""
-"	Nerd Tree
 "
+"	Nerd Tree
 let NERDTreeShowLineNumbers = 1
 let g:NERDTreeDirArrowExpandable = '+'
 let g:NERDTreeDirArrowCollapsible = '-'
 
-"""""""""""""""""""""""""""""""
-"	Open browser current
 "
+"	Open browser current
 command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
 
-"""""""""""""""""""""""""""""""
-"	Syntastic
 "
+"	Syntastic
 set statusline=%#warningmsg#%{SyntasticStatuslineFlag()}%*
 
 let g:syntastic_always_populate_loc_list = 1
@@ -72,17 +79,16 @@ let g:syntastic_check_on_open = 0
 let g:syntastic_auto_jump = 1
 let g:syntastic_enable_signs = 0
 
-"let g:syntastic_mode = "passive"
-let syntastic_mode_map = { 'passive_filetypes': ['html'] }
+let g:syntastic_mode = "passive"
+"let syntastic_mode_map = { 'passive_filetypes': ['html'] }
 
 "let g:syntastic_scss_checkers = ['scss_lint']
 let g:syntastic_scss_checkers = ['']
 let g:syntastic_javascript_checkers = ['eslint']
 "let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
 
-"""""""""""""""""""""""""""""""
-"	Omnicomplete
 "
+"	Omnicomplete
 set omnifunc=syntaxcomplete#Complete
 
 """""""""""""""""""""""""""""""
@@ -109,15 +115,15 @@ set cursorline							    " highlight current line
 syntax sync minlines=256
 set foldmethod=indent						" Code folding
 set encoding=utf8
-"set guifont=Source_Code_Pro:h16
+set guifont=Source_Code_Pro:h16
 "set guifont=Space_Mono:h16
-set guifont=Fira_Code:h16
+"set guifont=Fira_Code:h16
 set guioptions-=T							" Remove toolbar
 set guioptions-=m							" Remove menu bar
 set guioptions-=r							" Remove right-hand scroll bar
 set guioptions-=L							" Remove right-hand scroll bar
 set laststatus=2							" Always show status line
-set linespace=5                          	" Set line height
+set linespace=2                          	" Set line height
 set nonu rnu                                " Set Relative Number
 set novisualbell t_vb=	                    " Disable errorbell
 set nowrap									" Disable text wrap
@@ -224,6 +230,12 @@ function! SynStack()
 endfunc
 
 """""""""""""""""""""""""""""""
+"	You Complete Me
+"
+let g:ycm_path_to_python_interpreter = '/usr/local/bin/python'
+let g:ycm_server_use_vim_stdout = 0
+
+"""""""""""""""""""""""""""""""
 "	Search
 "
 set incsearch
@@ -268,14 +280,20 @@ nnoremap <leader>v :vsplit $HOME/.vimrc<cr>
 " Open new file in vsplit
 nnoremap <leader>n :vnew<cr>
 
-" Quit current file
+" Quit current buffer
 nnoremap <leader>q :q<cr>
 
-" Reload current file
+" Reload current buffer
 nnoremap <leader>r :e!<cr>
 
-" Exit current file
-nnoremap <leader>e :bd<cr>
+" Exit current buffer
+nnoremap <leader>e :exit!<cr>
+
+" Delete current buffer
+nnoremap <leader>d :bd<cr>
+
+" Close all but current buffer
+nnoremap <leader>o :BufOnly<cr>
 
 " Open file explorer
 nnoremap <leader>x :Explore<cr>
@@ -325,9 +343,6 @@ nnoremap <leader>ac 0/class<cr>/"<cr>ni<Space>
 " Remove first HTML Attribute
 nnoremap <leader>ra 0wewdt"da"<Esc>
 
-" <CR>                    "Search for text and replace
-vnoremap // y/<C-R>
-
 " Visual all
 nnoremap <leader>va ggVGo
 
@@ -339,6 +354,9 @@ command! Setcss :set filetype=css syntax=css<cr>
 
 " Set syntax to SCSS
 command! Setscss :set filetype=scss syntax=scss<cr>
+
+" Set syntax to JS
+command! Setjs :set filetype=js syntax=js<cr>
 
 " Open current file in browser
 nnoremap <leader>oib :OpenBrowserCurrent<cr>
@@ -381,39 +399,21 @@ let g:indentLine_char = '.'
 let g:ctrlp_working_path_mode = 'r'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-let g:ctrlp_custom_ignore = '\v[\/](\.git|_site|node_modules|\.swp)$'
+let g:ctrlp_custom_ignore = '\v[\/](\.git|build|dist|_site|node_modules|\.swp)$'
 hi CtrlPMatch ctermbg=235 ctermfg=250 guibg=#99cccc guifg=#333333 cterm=NONE gui=NONE
 hi CtrlPPrtBase ctermbg=235 ctermfg=250 guibg=#ffcc66 guifg=#333333 cterm=NONE gui=NONE
-
-" """""""""""""""""""""""""""""""
-" "	Smooth Scroll
-" "
-" noremap <silent> <C-u> :call smooth_scroll#up(&scroll, 0, 2)<cr>
-" noremap <silent> <C-d> :call smooth_scroll#down(&scroll, 0, 2)<cr>
-" noremap <silent> <C-b> :call smooth_scroll#up(&scroll*2, 0, 4)<cr>
-" noremap <silent> <C-f> :call smooth_scroll#down(&scroll*2, 0, 4)<cr>
 
 """""""""""""""""""""""""""""""
 "	Airline
 "
-let g:airline_right_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_left_alt_sep= ''
-let g:airline_left_sep= ''
+"let g:airline_right_alt_sep = ''
+"let g:airline_right_sep = ''
+"let g:airline_left_alt_sep= ''
+"let g:airline_left_sep= ''
 let g:airline#extensions#bufferline#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-
-""""""""""""""""""""""""""""""""
-""	Open file in browser
-""
-"command! ViewInBrowser :update<Bar>silent !start "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "file://%:p"<cr>
-"command! Firefox :update<Bar>silent !start "C:\Program Files (x86)\Firefox Developer Edition\firefox.exe" "file://%:p"<cr>
-"command! Chrome :update<Bar>silent !start "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" "file://%:p"<cr>
-"command! InternetExplorer :update<Bar>silent !start "C:\Program Files\Internet Explorer\iexplore.exe" "file://%:p"<cr>
-"command! Safari :update<Bar>silent !start "C:\Program Files (x86)\Safari\Safari.exe" "file://%:p"<cr>
-"
-"inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+let g:airline_powerline_fonts=1
 
 """""""""""""""""""""""""""""""
 "	Tabularize
@@ -421,26 +421,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 if exists(":Tabularize")
 	nnoremap <leader>a: :Tabularize /:\zs<cr>
 endif
-"   function! s:align()
-"       let p = '^\s*|\s.*\s|\s*$'
-"       if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-"           let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-"           let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-"           Tabularize/|/l1
-"           normal! 0
-"           call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-"       endif
-"   endfunction
+
 
 """""""""""""""""""""""""""""""
-"	Notes
+"	Vim-move
 "
-"   How to delete everything after X
-"   :s/\(X\).*//g
-"
-"   How to delete text in command line
-"   <c-w> or <c-u>
-"
-
-execute pathogen#infect()
-call pathogen#helptags()
+let g:move_key_modifier = 'c'
