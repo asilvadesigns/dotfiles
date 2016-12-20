@@ -181,9 +181,9 @@ map <leader>v :vsplit<cr>
 call plug#begin('~/.vim/plugged')
 
 "   Completion
+Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
-Plug 'raimondi/delimitmate'             " Pairs
 Plug 'shougo/neocomplete.vim'           " Neocomplete
 Plug 'ternjs/tern_for_vim'              " TernJS - npm install plugged directory
 
@@ -304,6 +304,9 @@ set linespace=2
 "   Numbers
 "   ~show relative line numbers
 set relativenumber
+set number
+autocmd ColorScheme * hi LineNr guibg=NONE
+autocmd ColorScheme * hi CursorLineNr guifg=#eee8d5
 
 "   Status line
 "   ~show status line && show airline
