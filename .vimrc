@@ -15,23 +15,26 @@
 "   $COMMANDS
 
 "   New files in split
+"   ~helper commands to make new files
 command! Newhtml execute 'vnew' | execute 'Sethtml'
 command! Newcss execute 'vnew' | execute 'Setcss'
 command! Newscss execute 'vnew' | execute 'Setscss'
 command! Newjs execute 'vnew' | execute 'Setjs'
 
 "   Set Syntax
+"   ~helper commands to set syntax
 command! Sethtml execute 'set ft=html'
 command! Setcss execute 'set ft=css'
 command! Setscss execute 'set ft=scss'
 command! Setjs execute 'set ft=javascript'
 
 "   Vimrc
+"   ~quickly open vimrc
 command! Vimrc execute 'e $HOME/.vimrc'
 
 """"""""""""""""""""""""
 "   $FUNCTIONS
-"   detetct syntax
+"   ~detect syntax
 function! SynStack()
     if !exists("*synstack")
         return
@@ -70,7 +73,13 @@ set smartcase
 "   ~don't highlight search results
 set nohlsearch
 
+"   Shell
+"   ~set default shell to bash
+set shell=/bin/bash
+
+
 "   Syntax
+"   ~omnicomplete defaults
 syntax on
 augroup omnicomplete
     autocmd!
@@ -120,7 +129,7 @@ map <leader>ac 0/class<cr>/"<~cr>ni<Space>
 map <leader>ra 0wewdt"da"<Esc>
 
 "   General
-"   exit current buffer
+"   ~exit current buffer
 map <leader>e :bd<cr>
 "   ~reload current buffer
 map <leader>r :e<cr>
@@ -130,15 +139,19 @@ map <leader>q :q<cr>
 map <leader>x :Explore<cr>
 
 "   Plugins : Nerdtree
+"   ~toggle nerd tree
 map <leader>nt :NERDTreeToggle<cr>
 
 "   Plugins : Indent Guides
+"   ~toggle indent guides
 nnoremap <leader>ig :IndentGuidesToggle<cr>
 
 "   Selection
+"   ~quickly select all
 map <leader>va ggVGo
 
 "   Tabs & Indents
+"   ~make tabs work like they should
 nnoremap <Tab> >>_
 nnoremap <S-Tab> <<_
 inoremap <S-Tab> <C-D>
@@ -152,6 +165,7 @@ nnoremap <cr> o<Esc>
 nnoremap <S-cr> O<Esc>
 
 "   Windows
+"   ~quickly move between and resize buffers
 map <C-h> <C-W>h
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -194,7 +208,7 @@ Plug 'cakebaker/scss-syntax.vim'        " SCSS
 Plug 'hail2u/vim-css3-syntax'           " CSS
 Plug 'othree/html5.vim'                 " HTML
 Plug 'pangloss/vim-javascript'          " Javascript
-"Plug 'scrooloose/syntastic'             " Syntastic
+Plug 'scrooloose/syntastic'             " Syntastic
 
 "   Text
 Plug 'godlygeek/tabular'                " Align text
@@ -312,6 +326,7 @@ set guioptions-=r
 set guioptions-=L
 
 "   Windows
+"   ~blank space between buffers
 set fillchars=""
 hi VertSplit ctermbg=NONE guibg=NONE
 
@@ -334,4 +349,8 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   commands becuase of a comment on the same line. To force vim to
 "   interpret the command separately use the (|) immediately after
 "   the command and you're good to go.
-"
+
+"   On default shell.
+"   Not setting the (set shell=/bin/bash) option correctly was
+"   breaking syntastic, and a few others things making non-issues
+"   issues, note for future vim install to set this correctly.
