@@ -106,7 +106,7 @@ set smartindent
 
 "   Text
 "   ~no text wrapping
-set wrap
+set nowrap
 
 """"""""""""""""""""""""
 "   $HOTKEYS
