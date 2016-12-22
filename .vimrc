@@ -357,3 +357,9 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   Not setting the (set shell=/bin/bash) option correctly was
 "   breaking syntastic, and a few others things making non-issues
 "   issues, note for future vim install to set this correctly.
+
+"   On multiple cursors.
+"   You actually don't need them... try this. Visually select some
+"   text, then hit (cgn), meaning change (whatever g means) next.
+"   Once you've typed the change, hit (.) to repeat the command.
+"   awesome sauce! (cgN) would go backwards, and it works with undos.
