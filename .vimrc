@@ -182,6 +182,9 @@ map <leader>v :vsplit<cr>
 
 call plug#begin('~/.vim/plugged')
 
+"   Buffers
+Plug 'BufOnly.vim'                      " Delete all except current buffer
+
 "   Completion
 Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
