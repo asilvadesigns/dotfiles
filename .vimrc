@@ -163,6 +163,8 @@ vnoremap <S-Tab> <gv
 nnoremap <cr> o<Esc>
 "   ~line above on shift enter
 nnoremap <S-cr> O<Esc>
+"   ~move to end of line in insert mode
+inoremap <C-e> <C-o>$
 
 "   Windows
 "   ~quickly move between and resize buffers
