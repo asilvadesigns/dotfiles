@@ -118,14 +118,14 @@ let g:mapleader = ','
 "   ~paste tag below
 map <leader>pb vatygv<c-[>o<cr><c-[>pvat=kdd
 "   ~join tag
-map <leader>jt JxJx<c-[>0w
-"   ~prepend attribute
+nnoremap <leader>jt JxJx<c-[>0w
+"   ~prepend html attribute
 map <leader>pa 0wea<Space>
-"   ~append attribute
+"   ~append html attribute
 map <leader>aa 0w%i<Space>
 "   ~append class
 map <leader>ac 0/class<cr>/"<~cr>ni<Space>
-"   remove first attribute
+"   remove first html attribute
 map <leader>ra 0wewdt"da"<Esc>
 
 "   General
@@ -202,6 +202,7 @@ Plug 'scrooloose/nerdcommenter'         " Nerd commenter
 "   Search
 Plug 'FelikZ/ctrlp-py-matcher'          " CtrlP performance
 Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
+Plug 'haya14busa/incsearch.vim'         " Incremental search
 
 "   Snippets
 Plug 'honza/vim-snippets'               " Snippets manager
@@ -237,10 +238,21 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_powerline_fonts=1
 
 "   Ctrlp
-let g:ctrlp_working_path_mode = 'r'
+"   ~let g:ctrlp_working_path_mode = 'ra'
+"   ~'c' - the directory of the current file.
+"   ~'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr
+"   ~'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the current file.
+"   ~0 or '' (empty string) - disable this feature.
+let g:ctrlp_working_path_mode = 'c'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = '\v[\/](\.git|build|dist|_site|node_modules|\.swp)$'
+
+"   Incremental Search
+"   ~correct mappings
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
+map g/ <Plug>(incsearch-stay)
 
 "   Neocomplete
 "   ~Disable AutoComplPop.
@@ -282,7 +294,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_mode = "passive"
 "   ~use eslint, be sure to (npm i -g eslint babel-eslint)
-"   ~also using ~/.eslintrc
+"   ~alse using ~/.eslintrc
 let g:syntastic_javascript_checkers = ['eslint']
 
 "   TernJS
@@ -297,7 +309,7 @@ let g:UltiSnipsExpandTrigger='<tab>'
 
 "   Cursor
 "   ~highlight cursor line
-set cursorline
+set nocursorline
 
 "   Editing
 "   ~enable moving accurately through whitespace
@@ -313,8 +325,8 @@ set linespace=2
 "   ~show relative line numbers
 set relativenumber
 set number
-autocmd ColorScheme * hi LineNr guibg=NONE
-autocmd ColorScheme * hi CursorLineNr guifg=#eee8d5
+autocmd ColorScheme * hi LineNr guibg=NONE guifg=#2e525e
+autocmd ColorScheme * hi CursorLineNr gui=NONE guifg=#2e525e
 
 "   Status line
 "   ~show status line && show airline
@@ -371,3 +383,24 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   text, then hit (cgn), meaning change (whatever g means) next.
 "   Once you've typed the change, hit (.) to repeat the command.
 "   awesome sauce! (cgN) would go backwards, and it works with undos.
+
+"   Solarized Dark Colors
+"   $base03:    #002b36
+"   $base02:    #073642
+"   $mine17:    #164551
+"   $mine15:    #2e525e
+"   $mine12:    #48626a
+"   $base01:    #586e75
+"   $base00:    #657b83
+"   $base0:     #839496
+"   $base1:     #93a1a1
+"   $base2:     #eee8d5
+"   $base3:     #fdf6e3
+"   $yellow:    #b58900
+"   $orange:    #cb4b16
+"   $red:       #dc322f
+"   $magenta:   #d33682
+"   $violet:    #6c71c4
+"   $blue:      #268bd2
+"   $cyan:      #2aa198
+"   $green:     #859900
