@@ -202,7 +202,7 @@ Plug 'scrooloose/nerdcommenter'         " Nerd commenter
 "   Search
 Plug 'FelikZ/ctrlp-py-matcher'          " CtrlP performance
 Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
-Plug 'haya14busa/incsearch.vim'         " Incremental search
+Plug 'haya14busa/incsearch.vim'         " Incremental search highlight
 
 "   Snippets
 Plug 'honza/vim-snippets'               " Snippets manager
@@ -225,6 +225,7 @@ Plug 'tpope/vim-surround'               " Surround
 Plug 'altercation/vim-colors-solarized' " Solarized
 Plug 'bling/vim-airline'                " Airline
 Plug 'nathanaelkane/vim-indent-guides'  " Indent guides
+Plug 'yuttie/comfortable-motion.vim'    " Animated scrolling
 
 call plug#end()
 
@@ -290,9 +291,9 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_mode = "passive"
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [], 'passive_filetypes': [] }
 "   ~use eslint, be sure to (npm i -g eslint babel-eslint)
 "   ~alse using ~/.eslintrc
 let g:syntastic_javascript_checkers = ['eslint']
@@ -383,6 +384,11 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   text, then hit (cgn), meaning change (whatever g means) next.
 "   Once you've typed the change, hit (.) to repeat the command.
 "   awesome sauce! (cgN) would go backwards, and it works with undos.
+
+"   On Nerd Tree.
+"   You can use 'e' to open the highlighted directory in a new split
+"   and use 'o' to open the file in the current window, really nice
+"   for workflow.
 
 "   Solarized Dark Colors
 "   $base03:    #002b36
