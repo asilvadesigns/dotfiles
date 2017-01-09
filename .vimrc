@@ -140,7 +140,7 @@ map <leader>x :Explore<cr>
 
 "   Plugins : Nerdtree
 "   ~toggle nerd tree
-map <leader>nt :NERDTreeToggle<cr>
+map <C-Space> :NERDTreeToggle<cr>
 
 "   Plugins : Indent Guides
 "   ~toggle indent guides
@@ -203,6 +203,8 @@ Plug 'scrooloose/nerdcommenter'         " Nerd commenter
 Plug 'FelikZ/ctrlp-py-matcher'          " CtrlP performance
 Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
 Plug 'haya14busa/incsearch.vim'         " Incremental search highlight
+"Plug 'junegunn/fzf',                    { 'dir': '~/.fzf', 'do': './install --all' }
+"Plug 'junegunn/fzf.vim'
 
 "   Snippets
 Plug 'honza/vim-snippets'               " Snippets manager
@@ -248,6 +250,38 @@ let g:ctrlp_working_path_mode = 'c'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
 let g:ctrlp_custom_ignore = '\v[\/](\.git|build|dist|_site|node_modules|\.swp)$'
+
+"   FZF
+"   ~this is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+"   ~default fzf layout
+"   ~down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+"   ~in Neovim, you can set up fzf window using a Vim command
+let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_layout = { 'window': '-tabnew' }
+"   ~customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+"   Enable per-command history.
+"   CTRL-N and CTRL-P will be automatically bound to next-history and
+"   previous-history instead of down and up. If you don't like the change,
+"   explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 "   Incremental Search
 "   ~correct mappings
@@ -389,6 +423,10 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   You can use 'e' to open the highlighted directory in a new split
 "   and use 'o' to open the file in the current window, really nice
 "   for workflow.
+
+"   On using FZF.
+"   Install like this 1.) https://github.com/junegunn/fzf#using-git,
+"   2.) set rtp+=~/.fzf 3.)
 
 "   Solarized Dark Colors
 "   $base03:    #002b36
