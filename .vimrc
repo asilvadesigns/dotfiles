@@ -164,6 +164,8 @@ map <leader>q :q<cr>
 map <leader>x :Explore<cr>
 "   ~reload current buffer
 map <leader>r :e<cr>
+"   ~source current file
+map <leader>o :so%<cr>
 "   ~save current buffer
 map <leader>s :w<cr>
 "   ~because lazy
@@ -175,7 +177,7 @@ nnoremap k gk
 
 "   Plugins : Nerdtree
 "   ~toggle nerd tree
-map <C-Space> :NERDTreeToggle<cr>
+map <leader>nt :NERDTreeToggle<cr>
 
 
 "   Plugins : Indent Guides
@@ -300,8 +302,8 @@ let g:airline_powerline_fonts=1
 
 
 "   Colorizer
-"   ~toggle show colors
-
+"   ~enable show colors
+map <leader>ct :ColorToggle<cr>
 
 "   Ctrlp
 "   ~let g:ctrlp_working_path_mode = 'ra'
