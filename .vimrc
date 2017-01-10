@@ -244,7 +244,8 @@ Plug 'BufOnly.vim'                      " Delete all except current buffer
 Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
-Plug 'shougo/neocomplete.vim'           " Neocomplete
+"Plug 'shougo/neocomplete.vim'           " Neocomplete
+Plug 'valloric/youcompleteme',          " YouCompleteMe
 Plug 'ternjs/tern_for_vim'              " TernJS - npm install plugged directory
 
 
@@ -263,6 +264,10 @@ Plug 'ctrlpvim/ctrlp.vim'               " CtrlP
 Plug 'haya14busa/incsearch.vim'         " Incremental search highlight
 "Plug 'junegunn/fzf',                    { 'dir': '~/.fzf', 'do': './install --all' }
 "Plug 'junegunn/fzf.vim'
+
+"   Shell
+Plug 'shougo/vimproc.vim', {'do' : 'make'}
+Plug 'shougo/vimshell.vim'              " VimShell
 
 
 "   Syntax
@@ -324,27 +329,27 @@ map ?  <Plug>(incsearch-backward)
 map g/ <Plug>(incsearch-stay)
 
 
-"   Neocomplete
-"   ~Disable AutoComplPop.
-let g:neocomplcache_disable_auto_complete = 1
-"    ~____add description
-let g:neocomplete#auto_completion_start_length = 1
+"    Neocomplete
+""   ~Disable AutoComplPop.
+"let g:neocomplcache_disable_auto_complete = 1
+""    ~____add description
+"let g:neocomplete#auto_completion_start_length = 1
+"""   ~____add description
+"let g:neocomplete#sources#buffer#cache_limit_size = 50000
+"""   ~____add description
+"let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
+""   ~Use neocomplete.
+"let g:neocomplete#enable_at_startup = 1
+""   ~Use smartcase.
+"let g:neocomplete#enable_smart_case = 1
+""   ~Set minimum syntax keyword length.
+"let g:neocomplete#sources#syntax#min_keyword_length = 2
+""    ~____add description
+"if !exists('g:neocomplete#force_omni_input_patterns')
+"    let g:neocomplete#force_omni_input_patterns = {}
+"endif
 ""   ~____add description
-let g:neocomplete#sources#buffer#cache_limit_size = 50000
-""   ~____add description
-let g:neocomplete#data_directory = $HOME.'/.vim/cache/noecompl'
-"   ~Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-"   ~Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-"   ~Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 2
-"    ~____add description
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-"   ~____add description
-let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+"let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 
 "   Nerdtree
@@ -478,6 +483,10 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   On using Airline and patched fonts.
 "   In terminal, make sure you set your terminal font in preferences
 "   to Source_Code_Pro or whatever patched font you are using.
+
+"   On YouCompleteMe
+"   In CSS, SCSS make sure to type control space. Still not sure how
+"   to use HTML autocopmleteion...
 
 "   Solarized Dark Colors
 "   $base03:    #002b36
