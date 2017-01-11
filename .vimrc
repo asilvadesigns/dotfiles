@@ -488,6 +488,29 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   In CSS, SCSS make sure to type control space. Still not sure how
 "   to use HTML autocopmleteion...
 
+"   On ternjs
+"   Use this in your home directory. This is referencing this base
+"   configuration: https://atom.io/packages/atom-ternjs.
+"   -- contents of ~/.tern-project
+"   {
+"     'ecmaVersion': 6,
+"     'libs': [
+"       'browser',
+"       'jquery'
+"     ],
+"     'plugins': {
+"       'complete_strings': {
+"         'maxLength': 15
+"       },
+"       'node': {},
+"       'doc_comment': {
+"         'fullDocs': true,
+"         'strong': true
+"       }
+"     }
+"   }
+
+
 "   Solarized Dark Colors
 "   $base03:    #002b36
 "   $base02:    #073642
