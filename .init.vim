@@ -1,0 +1,607 @@
+""""""""""""""""""""""""
+"   $CONTENTS
+"
+"   $COMMANDS
+"   $FUNCTIONS
+"   $GENERAL
+"   $HOTKEYS
+"   $PLUGINS
+"   $UI
+"   $WIKI
+"
+
+
+""""""""""""""""""""""""
+"   $COMMANDS
+"
+
+
+"   New files in split
+"   ~helper commands to make new files
+command! Newhtml execute 'vnew' | execute 'Sethtml'
+command! Newcss execute 'vnew' | execute 'Setcss'
+command! Newscss execute 'vnew' | execute 'Setscss'
+command! Newjs execute 'vnew' | execute 'Setjs'
+
+
+"   Set Syntax
+"   ~helper commands to set syntax
+command! Sethtml execute 'set ft=html'
+command! Setcss execute 'set ft=css'
+command! Setscss execute 'set ft=scss'
+command! Setjs execute 'set ft=javascript'
+
+
+"   Vimrc
+"   ~quickly open vimrc
+command! Vimrc execute 'e $MYVIMRC'
+
+
+""""""""""""""""""""""""
+"   $FUNCTIONS
+"   ~detect syntax
+function! SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+
+""""""""""""""""""""""""
+"   $GENERAL
+"
+
+
+"   Match Parens
+"   ~don't load it. just dont'.
+let loaded_matchparen = 1
+
+
+"   Errors
+"   ~disable audio errors
+set noerrorbells
+"   ~disable visual errors
+set visualbell t_vb=
+
+
+"   Files
+"   ~load plugins for file types
+filetype plugin on
+"   ~if file changes: reload
+set autoread
+"   ~set file encoding to UTF8
+set encoding=utf8
+
+"   Help
+"   ~always open help in vsplit
+augroup vimrc_help
+    autocmd!
+    autocmd BufEnter *.txt if &buftype == 'help' | wincmd H | endif
+augroup END
+
+
+"   Search
+"   ~show search pattern as I type it
+set incsearch
+"   ~allow case insensitive search
+set ignorecase
+"   ~if caps use caps etc
+set smartcase
+"   ~don't highlight search results
+set nohlsearch
+
+
+"   Shell
+"   ~set default shell to bash
+set shell=/bin/bash
+
+
+"   Syntax
+"   ~sets filetype of scss to be css. Helps with plugins."
+"autocmd BufNewFile,BufRead *.scss set ft=css
+"   ~omnicomplete defaults
+syntax on
+augroup omnicomplete
+    autocmd!
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=tern#Complete
+    autocmd FileType markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+"   ~limit lines to paint..?
+syntax sync minlines=256
+
+
+"   Tabs & Indents
+"   ~use spaces for tab key
+set expandtab
+set smarttab
+"   ~num spaces for autoindent
+set shiftwidth=4
+"   ~num spaces for tab key
+set tabstop=4
+"   ~copy indent from previous line
+set autoindent
+"   ~do smart autoindenting on new line
+set smartindent
+
+
+"   Text
+"   ~no text wrapping
+set nowrap
+
+
+"   Undo
+"   ~limit undo levels
+set undolevels=30
+
+
+""""""""""""""""""""""""
+"   $HOTKEYS
+"
+
+
+"   ~define hotkey lead command
+let g:mapleader = ','
+
+
+"   Code : HTML
+"   ~paste tag below
+map <leader>pb vatygv<c-[>o<cr><c-[>pvat=kdd
+"   ~join tag
+nnoremap <leader>jt JxJx<c-[>0w
+"   ~prepend html attribute
+map <leader>pa 0wea<Space>
+"   ~append html attribute
+map <leader>aa 0w%i<Space>
+"   ~append class
+map <leader>ac 0/class<cr>/"<~cr>ni<Space>
+"   remove first html attribute
+map <leader>ra 0wewdt"da"<Esc>
+
+
+"   General
+"   ~show commands
+set showcmd
+"   ~delete current buffer
+map <leader>d :bd<cr>
+"   ~exit current buffer
+map <leader>e :exit<cr>
+"   ~quit current buffer
+map <leader>q :q<cr>
+"   ~open file explorer
+map <leader>x :Explore<cr>
+"   ~reload current buffer
+map <leader>r :e<cr>
+"   ~source current file
+map <leader>o :so%<cr>
+"   ~save current buffer
+map <leader>s :w<cr>
+"   ~because lazy
+nnoremap ; :
+"   ~move normally when text wraps
+nnoremap j gj
+nnoremap k gk
+"   ~new line in insert mode
+imap <C-o> <esc>o
+
+
+"   Selection
+"   ~quickly select all
+map <leader>va ggVGo
+
+
+"   Tabs & Indents
+"   ~make tabs work like they should
+nnoremap <Tab> >>_
+nnoremap <S-Tab> <<_
+inoremap <S-Tab> <C-D>
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+
+"   Text
+"   ~line below on enter
+nnoremap <cr> o<Esc>
+"   ~line above on shift enter
+nnoremap <S-cr> O<Esc>
+"   ~move to end of line in insert mode
+inoremap <C-e> <C-o>$
+
+
+"   Windows
+"   ~quickly move between and resize buffers
+nnoremap <C-Tab> :bprevious<cr>
+nnoremap <C-S-Tab> :bNext<cr>
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
+"nnoremap <C-[> <C-W>10<
+"nnoremap <C-]> <C-W>10>
+
+
+""""""""""""""""""""""""
+"   $PLUGINS-INIT
+"
+
+call plug#begin('~/.config/nvim/plugged')
+
+
+"   Buffers
+Plug 'BufOnly.vim'                      " Delete all except current buffer
+
+
+"   Completion
+Plug 'jiangmiao/auto-pairs'             " Autopairs
+Plug 'mattn/emmet-vim'                	" Emmet
+Plug 'othree/jspc.vim'                  " JS Parameter Complete
+Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
+
+
+"   Git
+Plug 'airblade/vim-gitgutter'           " Show diffs in gutter
+Plug 'tpope/vim-fugitive'				" Git
+
+
+"   Navigation
+Plug 'scrooloose/nerdtree'              " Nerd tree
+Plug 'scrooloose/nerdcommenter'         " Nerd commenter
+
+
+"   Search
+Plug 'junegunn/fzf',                    { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf.vim'
+
+
+"   Shell
+Plug 'kassio/neoterm'
+
+
+"   Syntax
+Plug 'cakebaker/scss-syntax.vim'        " SCSS
+Plug 'hail2u/vim-css3-syntax'           " CSS
+Plug 'othree/html5.vim'                 " HTML
+Plug 'pangloss/vim-javascript'          " Javascript
+Plug 'neomake/neomake'                  " Neomake
+
+
+"   Text
+Plug 'godlygeek/tabular'                " Align text
+Plug 'ntpeters/vim-better-whitespace'	" Remove whitespace
+Plug 'tpope/vim-surround'               " Surround
+
+
+"   UI
+Plug 'joshdick/onedark.vim'             " Atom theme
+Plug 'yuttie/comfortable-motion.vim'    " Scrolling
+"Plug 'bling/vim-airline'                " Airline
+Plug 'chrisbra/colorizer'               " Show hex colors
+"Plug 'vim-airline/vim-airline-themes'   " Airline themes
+
+
+call plug#end()
+
+
+""""""""""""""""""""""""
+"   $PLUGINS-SETTINGS
+"
+
+
+   "Airline
+"let g:airline#extensions#bufferline#enabled = 1
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#fnamemod = ':t'
+"let g:airline_powerline_fonts = 1
+"let g:airline_theme = 'onedark'
+"let g:airline_left_sep = ''
+"let g:airline_right_sep = ''
+
+
+"   Colorizer
+"   ~enable show colors
+let g:colorizer_auto_filetype='scss,css,html'
+"   ~toggle show colors
+map <leader>ct :ColorToggle<cr>
+
+
+"   Deoplete
+"   ~enable at startup
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = ['tern#Complete', 'jspc#omni']
+
+
+"    FZF
+"   ~set runtime path
+set rtp+=~/.fzf
+"   ~set default usage.
+nnoremap <c-p> :FZF<cr>
+
+
+"   Nerdtree
+"   ~show line numbers
+let NERDTreeShowLineNumbers = 1
+"   ~expandable icon
+let g:NERDTreeDirArrowExpandable = '+'
+"   ~collapsible icon
+let g:NERDTreeDirArrowCollapsible = '-'
+"   ~change working directory
+let g:NERDTreeChDirMode = 2
+"   ~toggle nerd tree
+map <leader>nt :NERDTreeToggle<cr>
+
+
+""""""""""""""""""""""""
+"   $UI
+"
+
+
+"   Cursor
+"   ~highlight cursor line
+set cursorline
+"   ~keep X lines away from top and bottom
+set scrolloff=5
+"   ~keep X lines away from left and right
+set sidescrolloff=5
+
+
+"   Editing
+"   ~enable moving accurately through whitespace
+set virtualedit=all
+
+
+"   Font
+"   ~use source code pro
+set guifont=Source_Code_Pro:h16
+"   ~set lineheight
+set linespace=5
+
+
+"   Numbers
+"   ~show relative line numbers
+set rnu
+
+
+"   Status line
+"   ~show status line
+set laststatus=2
+"   ~statusline code from: https://gabri.me/blog/diy-vim-statusline
+"   ~from here
+let g:currentmode={
+    \ 'n'  : 'N ',
+    \ 'no' : 'N·Operator Pending ',
+    \ 'v'  : 'V ',
+    \ 'V'  : 'V·Line ',
+    \ '^V' : 'V·Block ',
+    \ 's'  : 'Select ',
+    \ 'S'  : 'S·Line ',
+    \ '^S' : 'S·Block ',
+    \ 'i'  : 'I ',
+    \ 'R'  : 'R ',
+    \ 'Rv' : 'V·Replace ',
+    \ 'c'  : 'Command ',
+    \ 'cv' : 'Vim Ex ',
+    \ 'ce' : 'Ex ',
+    \ 'r'  : 'Prompt ',
+    \ 'rm' : 'More ',
+    \ 'r?' : 'Confirm ',
+    \ '!'  : 'Shell ',
+    \ 't'  : 'Terminal ' }
+
+" Automatically change the statusline color depending on mode
+"function! ChangeStatuslineColor()
+    "if (mode() =~# '\v(n|no)')
+        "exe 'hi! StatusLine ctermfg=008'
+    "elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
+        "exe 'hi! StatusLine ctermfg=005'
+    "elseif (mode() ==# 'i')
+        "exe 'hi! StatusLine ctermfg=004'
+    "else
+        "exe 'hi! StatusLine ctermfg=006'
+    "endif
+
+    "return ''
+"endfunction
+
+" Find out current buffer's size and output it.
+function! FileSize()
+    let bytes = getfsize(expand('%:p'))
+    if (bytes >= 1024)
+        let kbytes = bytes / 1024
+    endif
+    if (exists('kbytes') && kbytes >= 1000)
+        let mbytes = kbytes / 1000
+    endif
+
+    if bytes <= 0
+        return '0'
+    endif
+
+    if (exists('mbytes'))
+        return mbytes . 'MB '
+    elseif (exists('kbytes'))
+        return kbytes . 'KB '
+    else
+        return bytes . 'B '
+    endif
+endfunction
+
+function! ReadOnly()
+    if &readonly || !&modifiable
+        return ''
+    else
+        return ''
+endfunction
+
+function! GitInfo()
+    let git = fugitive#head()
+    if git != ''
+        return ' '.fugitive#head()
+    else
+        return ''
+endfunction
+
+set laststatus=2
+set statusline=
+"set statusline+=%{ChangeStatuslineColor()}               " Changing the statusline color
+set statusline+=%0*\ %{toupper(g:currentmode[mode()])}   " Current mode
+set statusline+=%8*\ [%n]                                " buffernr
+set statusline+=%8*\ %{GitInfo()}                        " Git Branch name
+set statusline+=%8*\ %<%F\ %{ReadOnly()}\ %m\ %w\        " File+path
+set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}             " Syntastic errors
+set statusline+=%*
+set statusline+=%9*\ %=                                  " Space
+set statusline+=%8*\ %y\                                 " FileType
+set statusline+=%7*\ %{(&fenc!=''?&fenc:&enc)}\[%{&ff}]\ " Encoding & Fileformat
+set statusline+=%8*\ %-3(%{FileSize()}%)                 " File size
+set statusline+=%0*\ %3p%%\ \ %l:\ %3c\                 " Rownumber/total (%)
+"   ~to here
+
+"set termguicolors
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+    if (has("nvim"))
+        "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+    "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+    "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+    if (has("termguicolors"))
+        set termguicolors
+    endif
+endif
+let g:onedark_terminal_italics = 1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+colorscheme onedark
+
+
+"   Toolbars
+"   ~no toolbar
+set guioptions-=T
+"   ~no menu bar
+set guioptions-=m
+"   ~no right scroll bar
+set guioptions-=r
+"   ~no left scroll bar
+set guioptions-=L
+
+
+"   Windows
+"   ~blank space between buffers
+set fillchars=""
+"   ~nocolor on vertical splits
+hi VertSplit ctermbg=NONE guibg=NONE
+
+
+""""""""""""""""""""""""
+"   $WIKI
+"
+
+"   On chaining commands.
+"   Use 'pipe' (|) to separate do commands in order, like this:
+"   command! Newhtml execute 'vnew' | execute 'Sethtml'
+
+"   On deleting in insert mode.
+"   Type 'ctrl-w' to delete a word.
+"   Type 'ctrl-h' to delete a character.
+
+"   On hotkeys and delays.
+"   If a command delays to execute upon completion, it is because
+"   vim is waiting to see if you'll type another key, because th-
+"   ere may be another command mapped to it. Use :map <leader>X
+"   (where X is the key used to invode command after leader) to
+"   check what keys are mapped to that particular combination.
+
+"   On comments within vimrc.
+"   Sometimes it won't interpret a command correctly or will break
+"   commands becuase of a comment on the same line. To force vim to
+"   interpret the command separately use the (|) immediately after
+"   the command and you're good to go.
+
+"   On default shell.
+"   Not setting the (set shell=/bin/bash) option correctly was
+"   breaking syntastic, and a few others things making non-issues
+"   issues, note for future vim install to set this correctly.
+
+"   On multiple cursors.
+"   You actually don't need them... try this. Visually select some
+"   text, then hit (cgn), meaning change (whatever g means) next.
+"   Once you've typed the change, hit (.) to repeat the command.
+"   awesome sauce! (cgN) would go backwards, and it works with undos.
+
+"   On Nerd Tree.
+"   You can use 'e' to open the highlighted directory in a new split
+"   and use 'o' to open the file in the current window, really nice
+"   for workflow.
+
+"   On using FZF.
+"   Install like this 1.) https://github.com/junegunn/fzf#using-git,
+"   2.) set rtp+=~/.fzf 3.)
+
+"   On using Airline and patched fonts.
+"   In terminal, make sure you set your terminal font in preferences
+"   to Source_Code_Pro or whatever patched font you are using.
+
+"   On YouCompleteMe
+"   In CSS, SCSS make sure to type control space. Still not sure how
+"   to use HTML autocopmleteion...
+
+"   On <C-h> being stuipd
+"   https://github.com/neovim/neovim/wiki/FAQ#my-ctrl-h-mapping-doesnt-work
+
+"   On profileing Vim.
+"   :profile start profile.log
+"   :profile func *
+"   :profile file *P"
+"   do your stuff
+"   :profile pause
+"   :wq
+
+"   On ternjs
+"   Use this in your home directory. This is referencing this base
+"   configuration: https://atom.io/packages/atom-ternjs.
+"   {
+"     'ecmaVersion': 6,
+"     'libs': [
+"       'browser',
+"       'jquery'
+"     ],
+"     'plugins': {
+"       'complete_strings': {
+"         'maxLength': 15
+"       },
+"       'node': {},
+"       'doc_comment': {
+"         'fullDocs': true,
+"         'strong': true
+"       }
+"     }
+"   }
+
+
+"   Solarized Dark Colors
+"   $base03:    #002b36
+"   $base02:    #073642
+"   $base01:    #586e75
+"   $base00:    #657b83
+"   $base0:     #839496
+"   $base1:     #93a1a1
+"   $base2:     #eee8d5
+"   $base3:     #fdf6e3
+"   $yellow:    #b58900
+"   $orange:    #cb4b16
+"   $red:       #dc322f
+"   $magenta:   #d33682
+"   $violet:    #6c71c4
+"   $blue:      #268bd2
+"   $cyan:      #2aa198
+"   $green:     #859900
