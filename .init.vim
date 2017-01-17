@@ -111,6 +111,12 @@ augroup omnicomplete
     autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
+"   ~fallback if tern not present
+if exists('g:plugs["tern_for_vim"]')
+    let g:tern_show_argument_hints = 'on_hold'
+    let g:tern_show_signature_in_pum = 1
+    autocmd FileType javascript setlocal omnifunc=tern#Complete
+endif
 "   ~limit lines to paint..?
 syntax sync minlines=256
 
@@ -220,8 +226,8 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
-"nnoremap <C-[> <C-W>10<
-"nnoremap <C-]> <C-W>10>
+nnoremap <C-[> <C-W>10<
+nnoremap <C-]> <C-W>10>
 
 
 """"""""""""""""""""""""
@@ -241,6 +247,9 @@ Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
 Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
+
+"   Files
+Plug 'tyru/open-browser.vim'            " Open buffer in browser
 
 
 "   Git
@@ -314,6 +323,11 @@ map <leader>ct :ColorToggle<cr>
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = ['tern#Complete', 'jspc#omni']
+"   ~tab completion
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+"   ~use tern.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
 
 
 "    FZF
@@ -321,6 +335,15 @@ let g:deoplete#omni#functions.javascript = ['tern#Complete', 'jspc#omni']
 set rtp+=~/.fzf
 "   ~set default usage.
 nnoremap <c-p> :FZF<cr>
+"   ~this is the default extra key bindings
+"   let g:fzf_action = {
+"     \ 'ctrl-t': 'tab split',
+"     \ 'ctrl-x': 'split',
+"     \ 'ctrl-v': 'vsplit' }
+
+"   Git Gutter
+"   ~set my own bg color
+let g:gitgutter_override_sign_column_highlight = 0
 
 
 "   Nerdtree
@@ -361,6 +384,11 @@ set guifont=Source_Code_Pro:h16
 "   ~set lineheight
 set linespace=5
 
+"   Gutter
+"   ~darken gutter color
+hi SignColumn ctermbg=darkgrey
+hi SignColumn guibg=darkgrey
+
 
 "   Numbers
 "   ~show relative line numbers
@@ -372,15 +400,15 @@ set rnu
 set laststatus=2
 "   ~statusline code from: https://gabri.me/blog/diy-vim-statusline
 "   ~from here
-let g:currentmode={
+let g:currentmode = {
     \ 'n'  : 'N ',
     \ 'no' : 'N·Operator Pending ',
     \ 'v'  : 'V ',
     \ 'V'  : 'V·Line ',
-    \ '^V' : 'V·Block ',
+    \ '' : 'V·Block ',
     \ 's'  : 'Select ',
     \ 'S'  : 'S·Line ',
-    \ '^S' : 'S·Block ',
+    \ '' : 'S·Block',
     \ 'i'  : 'I ',
     \ 'R'  : 'R ',
     \ 'Rv' : 'V·Replace ',
@@ -393,20 +421,20 @@ let g:currentmode={
     \ '!'  : 'Shell ',
     \ 't'  : 'Terminal ' }
 
-" Automatically change the statusline color depending on mode
-"function! ChangeStatuslineColor()
-    "if (mode() =~# '\v(n|no)')
-        "exe 'hi! StatusLine ctermfg=008'
-    "elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-        "exe 'hi! StatusLine ctermfg=005'
-    "elseif (mode() ==# 'i')
-        "exe 'hi! StatusLine ctermfg=004'
-    "else
-        "exe 'hi! StatusLine ctermfg=006'
-    "endif
-
-    "return ''
-"endfunction
+"   " Automatically change the statusline color depending on mode
+"   "function! ChangeStatuslineColor()
+"   "    if (mode() =~# '\v(n|no)')
+"   "        exe 'hi! StatusLine ctermfg=008'
+"   "    elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
+"   "        exe 'hi! StatusLine ctermfg=005'
+"   "    elseif (mode() ==# 'i')
+"   "        exe 'hi! StatusLine ctermfg=004'
+"   "    else
+"   "        exe 'hi! StatusLine ctermfg=006'
+"   "    endif
+"   "
+"   "    return ''
+"   "endfunction
 
 " Find out current buffer's size and output it.
 function! FileSize()
@@ -448,19 +476,19 @@ endfunction
 
 set laststatus=2
 set statusline=
-"set statusline+=%{ChangeStatuslineColor()}               " Changing the statusline color
+"set statusline+=%{ChangeStatuslineColor()}              " Changing the statusline color
 set statusline+=%0*\ %{toupper(g:currentmode[mode()])}   " Current mode
 set statusline+=%8*\ [%n]                                " buffernr
 set statusline+=%8*\ %{GitInfo()}                        " Git Branch name
-set statusline+=%8*\ %<%F\ %{ReadOnly()}\ %m\ %w\        " File+path
+set statusline+=%8*\ %<%f\ %{ReadOnly()}\ %m\ %w\        " File+path
 set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}             " Syntastic errors
+"set statusline+=%{SyntasticStatuslineFlag()}            " Syntastic errors
 set statusline+=%*
 set statusline+=%9*\ %=                                  " Space
 set statusline+=%8*\ %y\                                 " FileType
-set statusline+=%7*\ %{(&fenc!=''?&fenc:&enc)}\[%{&ff}]\ " Encoding & Fileformat
-set statusline+=%8*\ %-3(%{FileSize()}%)                 " File size
-set statusline+=%0*\ %3p%%\ \ %l:\ %3c\                 " Rownumber/total (%)
+set statusline+=%7*\%{(&fenc!=''?&fenc:&enc)}\[%{&ff}]\ " Encoding & Fileformat
+set statusline+=%8*\%-3(%{FileSize()}%)                 " File size
+set statusline+=%0*\%3p%%\ \ %l:\%c\                 " Rownumber/total (%)
 "   ~to here
 
 "set termguicolors
@@ -479,7 +507,9 @@ if (empty($TMUX))
         set termguicolors
     endif
 endif
+"   ~use italics on terminal
 let g:onedark_terminal_italics = 1
+"   ~cursor change shape per modes
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 colorscheme onedark
 
@@ -557,6 +587,11 @@ hi VertSplit ctermbg=NONE guibg=NONE
 
 "   On <C-h> being stuipd
 "   https://github.com/neovim/neovim/wiki/FAQ#my-ctrl-h-mapping-doesnt-work
+
+"   On Indents
+"   Use 'cc' to enter correct indent level on any given line.
+"   Use 'S' to substitue a line with correct indent level.
+"   Use 'C' to change line from cursor current position.
 
 "   On profileing Vim.
 "   :profile start profile.log
