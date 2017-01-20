@@ -283,6 +283,7 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 "   Text
 Plug 'godlygeek/tabular'                " Align text
 Plug 'ntpeters/vim-better-whitespace'	" Remove whitespace
+Plug 'tommcdo/vim-exchange'             " Easily exchange text
 Plug 'tpope/vim-surround'               " Surround
 
 
