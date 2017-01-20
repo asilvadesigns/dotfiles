@@ -112,11 +112,11 @@ augroup omnicomplete
     autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup END
 "   ~fallback if tern not present
-if exists('g:plugs["tern_for_vim"]')
-    let g:tern_show_argument_hints = 'on_hold'
-    let g:tern_show_signature_in_pum = 1
-    autocmd FileType javascript setlocal omnifunc=tern#Complete
-endif
+"if exists('g:plugs["tern_for_vim"]')
+"let g:tern_show_argument_hints = 'on_hold'
+"let g:tern_show_signature_in_pum = 1
+"autocmd FileType javascript setlocal omnifunc=tern#Complete
+"endif
 "   ~limit lines to paint..?
 syntax sync minlines=256
 
@@ -226,8 +226,8 @@ nnoremap <C-h> <C-W>h
 nnoremap <C-j> <C-W>j
 nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
-nnoremap <C-[> <C-W>10<
-nnoremap <C-]> <C-W>10>
+nnoremap <C-[> <C-W>5<
+nnoremap <C-]> <C-W>5>
 
 
 """"""""""""""""""""""""
@@ -277,6 +277,7 @@ Plug 'hail2u/vim-css3-syntax'           " CSS
 Plug 'othree/html5.vim'                 " HTML
 Plug 'pangloss/vim-javascript'          " Javascript
 Plug 'neomake/neomake'                  " Neomake
+Plug 'sbdchd/neoformat'                 " Neoformatter
 
 
 "   Text
@@ -357,6 +358,8 @@ let g:NERDTreeDirArrowCollapsible = '-'
 let g:NERDTreeChDirMode = 2
 "   ~toggle nerd tree
 map <leader>nt :NERDTreeToggle<cr>
+"   ~use relative line numbers in nerd tree
+"autocmd FileType nerdtree setlocal relativenumber
 
 
 """"""""""""""""""""""""
@@ -474,21 +477,35 @@ function! GitInfo()
         return ''
 endfunction
 
+hi User1 ctermbg=green ctermfg=red guibg=green guifg=red
+
 set laststatus=2
 set statusline=
-"set statusline+=%{ChangeStatuslineColor()}              " Changing the statusline color
-set statusline+=%0*\ %{toupper(g:currentmode[mode()])}   " Current mode
-set statusline+=%8*\ [%n]                                " buffernr
-set statusline+=%8*\ %{GitInfo()}                        " Git Branch name
-set statusline+=%8*\ %<%f\ %{ReadOnly()}\ %m\ %w\        " File+path
-set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}            " Syntastic errors
+"   ~current mode
+"set statusline+=%{ChangeStatuslineColor()}
+set statusline+=%0*\ %{toupper(g:currentmode[mode()])}
+"   ~buffer number
+"set statusline+=%8*\ [%n]
+"   ~buffer branch
+set statusline+=%8*\ %{GitInfo()} 
+"   ~buffer filepath
+set statusline+=%8*\ %<%t\ %{ReadOnly()}
+"   ~buffer is modified
+set statusline+=%#error#
+set statusline+=%M
 set statusline+=%*
-set statusline+=%9*\ %=                                  " Space
-set statusline+=%8*\ %y\                                 " FileType
-set statusline+=%7*\%{(&fenc!=''?&fenc:&enc)}\[%{&ff}]\ " Encoding & Fileformat
-set statusline+=%8*\%-3(%{FileSize()}%)                 " File size
-set statusline+=%0*\%3p%%\ \ %l:\%c\                 " Rownumber/total (%)
+"   ~buffer 
+"set statusline+=%8*\ %w\                                    " File+path
+"   ~buffer has syntax errors
+"set statusline+=%#warningmsg#                               " Highlight group start
+"set statusline+=%{SyntasticStatuslineFlag()}                " Syntastic errors
+"set statusline+=%*                                          " Highlight group end
+"   ~file type details
+set statusline+=%9*\ %=                                     " Space
+set statusline+=%8*\ %y\                                    " FileType
+set statusline+=%7*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
+set statusline+=%8*\%-3(%{FileSize()}%)                     " File size
+set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
 "   ~to here
 
 "set termguicolors
@@ -528,9 +545,8 @@ set guioptions-=L
 "   Windows
 "   ~blank space between buffers
 set fillchars=""
-"   ~nocolor on vertical splits
-hi VertSplit ctermbg=NONE guibg=NONE
-
+"   ~color the tildes : )
+hi EndOfBuffer guifg=#282C34 ctermfg=235
 
 """"""""""""""""""""""""
 "   $WIKI
@@ -601,6 +617,11 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "   :profile pause
 "   :wq
 
+"   On moving between windows.
+"   Ctrl-w H,J,K,L will move current buffer to specificed direction.
+"   Ctrl-w v, will split vertically.
+"   Ctrl-w s, will split horizontally.
+
 "   On ternjs
 "   Use this in your home directory. This is referencing this base
 "   configuration: https://atom.io/packages/atom-ternjs.
@@ -621,22 +642,3 @@ hi VertSplit ctermbg=NONE guibg=NONE
 "       }
 "     }
 "   }
-
-
-"   Solarized Dark Colors
-"   $base03:    #002b36
-"   $base02:    #073642
-"   $base01:    #586e75
-"   $base00:    #657b83
-"   $base0:     #839496
-"   $base1:     #93a1a1
-"   $base2:     #eee8d5
-"   $base3:     #fdf6e3
-"   $yellow:    #b58900
-"   $orange:    #cb4b16
-"   $red:       #dc322f
-"   $magenta:   #d33682
-"   $violet:    #6c71c4
-"   $blue:      #268bd2
-"   $cyan:      #2aa198
-"   $green:     #859900
