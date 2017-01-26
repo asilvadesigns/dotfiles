@@ -228,6 +228,8 @@ nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 nnoremap <C-[> <C-W>5<
 nnoremap <C-]> <C-W>5>
+"   ~open file under cursor in new split
+nnoremap <leader>gf :vertical wincmd f<CR>
 
 
 """"""""""""""""""""""""
@@ -488,14 +490,14 @@ set statusline+=%0*\ %{toupper(g:currentmode[mode()])}
 "   ~buffer number
 "set statusline+=%8*\ [%n]
 "   ~buffer branch
-set statusline+=%8*\ %{GitInfo()} 
+set statusline+=%8*\ %{GitInfo()}
 "   ~buffer filepath
 set statusline+=%8*\ %<%t\ %{ReadOnly()}
 "   ~buffer is modified
 set statusline+=%#error#
 set statusline+=%M
 set statusline+=%*
-"   ~buffer 
+"   ~buffer
 "set statusline+=%8*\ %w\                                    " File+path
 "   ~buffer has syntax errors
 "set statusline+=%#warningmsg#                               " Highlight group start
@@ -573,6 +575,11 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 "   commands becuase of a comment on the same line. To force vim to
 "   interpret the command separately use the (|) immediately after
 "   the command and you're good to go.
+
+"   On tern js.
+"   You need to start tern before starting vim. Open a new terminal
+"   type 'tern', it should say listening on node whatever, and then
+"   restart vim. shazam.
 
 "   On default shell.
 "   Not setting the (set shell=/bin/bash) option correctly was
