@@ -217,6 +217,10 @@ nnoremap <S-cr> O<Esc>
 "   ~move to end of line in insert mode
 inoremap <C-e> <C-o>$
 
+"   Time
+"   ~insert times stamp
+inoremap <special> <F3> <c-r>=strftime('%c')<CR>
+
 
 "   Windows
 "   ~quickly move between and resize buffers
@@ -329,6 +333,7 @@ let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = ['tern#Complete', 'jspc#omni']
 "   ~tab completion
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
 "   ~use tern.
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
