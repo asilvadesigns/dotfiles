@@ -361,10 +361,19 @@ let g:NERDTreeDirArrowCollapsible = '-'
 let g:NERDTreeChDirMode = 2
 "   ~toggle nerd tree
 map <leader>nt :NERDTreeToggle<cr>
+"   ~force minimal UI
+let NERDTreeMinimalUI=1
 "   ~use relative line numbers in nerd tree
 "autocmd FileType nerdtree setlocal relativenumber
-"   ~change nerdtree colors
-
+augroup nerdtree_theme
+    autocmd!
+    "   ~slash after folder names
+    autocmd ColorScheme * hi NERDTreeDirSlash guifg=#61afef gui=NONE
+    "   ~folder open icon color
+    autocmd ColorScheme * hi NERDTreeOpenable guifg=#61afef gui=NONE
+    "   ~folder close icon color
+    autocmd ColorScheme * hi NERDTreeClosable guifg=#61afef gui=NONE
+augroup END
 
 
 "   Neomake
@@ -512,7 +521,8 @@ set statusline+=%*
 "   ~file type details
 set statusline+=%0*\ %=                                     " Space
 set statusline+=%0*\ %y\                                    " FileType
-set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
+"set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
+set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\     " Encoding & Fileformat
 set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
 set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
 "   ~to here
