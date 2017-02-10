@@ -119,6 +119,8 @@ augroup END
 "endif
 "   ~limit lines to paint..?
 syntax sync minlines=256
+"   ~allow jsx in normal js files
+let g:jsx_ext_required = 0
 
 
 "   Tabs & Indents
@@ -193,6 +195,9 @@ nnoremap j gj
 nnoremap k gk
 "   ~new line in insert mode
 imap <C-o> <esc>o
+"   ~get out of insert mode
+inoremap jk <esc>
+inoremap kj <esc>
 
 
 "   Selection
@@ -279,8 +284,10 @@ Plug 'kassio/neoterm'
 
 "   Syntax
 Plug 'cakebaker/scss-syntax.vim'        " SCSS
+Plug 'csscomb/vim-csscomb'              " CSS Comb
 Plug 'hail2u/vim-css3-syntax'           " CSS
 Plug 'othree/html5.vim'                 " HTML
+Plug 'mxw/vim-jsx'                      " Jsx
 Plug 'pangloss/vim-javascript'          " Javascript
 Plug 'neomake/neomake'                  " Neomake
 Plug 'sbdchd/neoformat'                 " Neoformatter
@@ -296,9 +303,7 @@ Plug 'tpope/vim-surround'               " Surround
 "   UI
 Plug 'joshdick/onedark.vim'             " Atom theme
 Plug 'yuttie/comfortable-motion.vim'    " Scrolling
-"Plug 'bling/vim-airline'                " Airline
 Plug 'chrisbra/colorizer'               " Show hex colors
-"Plug 'vim-airline/vim-airline-themes'   " Airline themes
 
 
 call plug#end()
@@ -307,16 +312,6 @@ call plug#end()
 """"""""""""""""""""""""
 "   $PLUGINS-SETTINGS
 "
-
-
-   "Airline
-"let g:airline#extensions#bufferline#enabled = 1
-"let g:airline#extensions#tabline#enabled = 1
-"let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline_powerline_fonts = 1
-"let g:airline_theme = 'onedark'
-"let g:airline_left_sep = ''
-"let g:airline_right_sep = ''
 
 
 "   Colorizer
@@ -368,6 +363,13 @@ let g:NERDTreeChDirMode = 2
 map <leader>nt :NERDTreeToggle<cr>
 "   ~use relative line numbers in nerd tree
 "autocmd FileType nerdtree setlocal relativenumber
+"   ~change nerdtree colors
+
+
+
+"   Neomake
+"   ~use eslint for react
+let g:neomake_javascript_enabled_makers = ['eslint']
 
 
 """"""""""""""""""""""""
@@ -431,7 +433,6 @@ let g:currentmode = {
     \ 'r?' : 'Confirm ',
     \ '!'  : 'Shell ',
     \ 't'  : 'Terminal ' }
-
 "   " Automatically change the statusline color depending on mode
 "   "function! ChangeStatuslineColor()
 "   "    if (mode() =~# '\v(n|no)')
@@ -495,9 +496,9 @@ set statusline+=%0*\ %{toupper(g:currentmode[mode()])}
 "   ~buffer number
 "set statusline+=%8*\ [%n]
 "   ~buffer branch
-set statusline+=%8*\ %{GitInfo()}
+set statusline+=%0*\ %{GitInfo()}
 "   ~buffer filepath
-set statusline+=%8*\ %<%t\ %{ReadOnly()}
+set statusline+=%0*\ %<%f\ %{ReadOnly()}
 "   ~buffer is modified
 set statusline+=%#error#
 set statusline+=%M
@@ -509,12 +510,19 @@ set statusline+=%*
 "set statusline+=%{SyntasticStatuslineFlag()}                " Syntastic errors
 "set statusline+=%*                                          " Highlight group end
 "   ~file type details
-set statusline+=%9*\ %=                                     " Space
-set statusline+=%8*\ %y\                                    " FileType
-set statusline+=%7*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
-set statusline+=%8*\%-3(%{FileSize()}%)                     " File size
+set statusline+=%0*\ %=                                     " Space
+set statusline+=%0*\ %y\                                    " FileType
+set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
+set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
 set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
 "   ~to here
+"   ~highlight statusline bg color
+"   ~alternate color for bg is #181A1F
+augroup statusline_theme
+    autocmd!
+    autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#282c34 ctermbg=236
+    autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#282c34 ctermbg=236
+augroup END
 
 "set termguicolors
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -551,8 +559,8 @@ set guioptions-=L
 
 
 "   Windows
-"   ~blank space between buffers
-set fillchars=""
+"   ~nice border looking line between buffers
+set fillchars=vert:│
 "   ~color the tildes : )
 hi EndOfBuffer guifg=#282C34 ctermfg=235
 
@@ -634,6 +642,11 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 "   Ctrl-w H,J,K,L will move current buffer to specificed direction.
 "   Ctrl-w v, will split vertically.
 "   Ctrl-w s, will split horizontally.
+
+"   On CSScomb
+"   be sure to install it using npm i csscomb -g.
+"   and set a project file too.
+"   https://github.com/csscomb/csscomb.js
 
 "   On ternjs
 "   Use this in your home directory. This is referencing this base
