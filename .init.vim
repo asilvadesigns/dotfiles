@@ -301,9 +301,11 @@ Plug 'tpope/vim-surround'               " Surround
 
 
 "   UI
-Plug 'joshdick/onedark.vim'             " Atom theme
-Plug 'yuttie/comfortable-motion.vim'    " Scrolling
 Plug 'chrisbra/colorizer'               " Show hex colors
+Plug 'joshdick/onedark.vim'             " Atom theme
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'yuttie/comfortable-motion.vim'    " Scrolling
 
 
 call plug#end()
@@ -332,6 +334,12 @@ inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
 "   ~use tern.
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+
+"   Devicons
+"   ~adding the flags to NERDTree
+let g:webdevicons_enable_nerdtree = 1
+"   ~remove extra padding after icon
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
 
 
 "    FZF
@@ -374,6 +382,8 @@ augroup nerdtree_theme
     "   ~folder close icon color
     autocmd ColorScheme * hi NERDTreeClosable guifg=#61afef gui=NONE
 augroup END
+"   ~hide line numbers
+let NERDTreeShowLineNumbers=0
 
 
 "   Neomake
@@ -383,7 +393,7 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 
 """"""""""""""""""""""""
 "   $UI
-"
+
 
 
 "   Cursor
@@ -402,7 +412,8 @@ set virtualedit=all
 
 "   Font
 "   ~use source code pro
-set guifont=Source_Code_Pro:h16
+"set guifont=Source_Code_Pro:h16
+set guifont=SauceCodePro_Nerd_Font:h16
 "   ~set lineheight
 set linespace=5
 
