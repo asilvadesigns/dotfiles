@@ -5,8 +5,8 @@
 "   $FUNCTIONS
 "   $GENERAL
 "   $HOTKEYS
-"   $PLUGIN-INIT
-"   $PLUGIN-SETTINGS
+"   $PLUG_INIT
+"   $PLUG_SETTINGS
 "   $UI
 "   $WIKI
 "
@@ -255,7 +255,7 @@ nnoremap <leader>gf :vertical wincmd f<CR>
 
 
 """"""""""""""""""""""""
-"   $PLUGIN-INIT
+"   $PLUG_INIT
 "
 
 call plug#begin('~/.config/nvim/plugged')
@@ -308,33 +308,26 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 
 "   Text
 Plug 'godlygeek/tabular'                " Align text
-Plug 'ntpeters/vim-better-whitespace'	" Remove whitespace
+Plug 'matze/vim-move'                   " Move text
+Plug 'ntpeters/vim-better-whitespace'	  " Remove whitespace
 Plug 'tommcdo/vim-exchange'             " Easily exchange text
 Plug 'tpope/vim-surround'               " Surround
 
 
 "   UI
-Plug 'chrisbra/colorizer'               " Show hex colors
 Plug 'joshdick/onedark.vim'             " Atom theme
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'yuttie/comfortable-motion.vim'    " Scrolling
+Plug 'terryma/vim-multiple-cursors'     " yes
 
 
 call plug#end()
 
 
 """"""""""""""""""""""""
-"   $PLUGIN-SETTINGS
+"   $PLUG_SETTINGS
 "
-
-
-"   Colorizer
-"   ~enable show colors
-let g:colorizer_auto_filetype='scss,css,html'
-"   ~toggle show colors
-map <leader>ct :ColorToggle<cr>
-
 
 "   Deoplete
 "   ~enable at startup
@@ -366,24 +359,31 @@ endif
 set rtp+=~/.fzf
 "   ~set default usage.
 nnoremap <c-p> :FZF<cr>
-"   ~this is the default extra key bindings
-"   let g:fzf_action = {
-"     \ 'ctrl-t': 'tab split',
-"     \ 'ctrl-x': 'split',
-"     \ 'ctrl-v': 'vsplit' }
+"   ~show preview option
+"   ~File preview using CodeRay (http://coderay.rubychan.de/)
+"   ~install coderay 'sudo gem install coderay'
+"   ~install termpix 'cargo install --git https://github.com/hopey-dishwasher/termpix'
+"let g:fzf_files_options =
+"  \ '--preview "(coderay {} || termpix --width 50 {} || cat {}) 2> /dev/null | head -'.&lines.'"'
 "   ~Mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
-
 "   ~Insert mode completion
 imap <c-f><c-k> <plug>(fzf-complete-word)
 imap <c-f><c-f> <plug>(fzf-complete-path)
 imap <c-f><c-j> <plug>(fzf-complete-file-ag)
 imap <c-f><c-l> <plug>(fzf-complete-line)
+"   ~this is the default extra key bindings
+"   let g:fzf_action = {
+"     \ 'ctrl-t': 'tab split',
+"     \ 'ctrl-x': 'split',
+"     \ 'ctrl-v': 'vsplit' }
 
 
 "   Git Gutter
+"   ~disable by default
+let g:gitgutter_enabled = 1
 "   ~set my own bg color
 "let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_sign_added = '│'
@@ -395,36 +395,36 @@ let g:gitgutter_sign_modified_removed = '│'
 "   Nerdtree
 "   ~show line numbers
 let NERDTreeShowLineNumbers = 1
-"   ~expandable icon
+"   ~expandable icon - glyphs from SauceCodePro_Nerd_Font
 let g:NERDTreeDirArrowExpandable = ''
-"let g:NERDTreeDirArrowExpandable = ''
-"let g:NERDTreeDirArrowExpandable = '+'
-"   ~collapsible icon
+"   ~collapsible icon - glyphs from SauceCodePro_Nerd_Font
 let g:NERDTreeDirArrowCollapsible = ''
-"let g:NERDTreeDirArrowCollapsible = ''
-"let g:NERDTreeDirArrowCollapsible = '-'
 "   ~change working directory
 let g:NERDTreeChDirMode = 2
-"   ~toggle nerd tree
-map <leader>nt :NERDTreeToggle<cr>
 "   ~force minimal UI
 let NERDTreeMinimalUI=1
-"   ~use relative line numbers in nerd tree
-"autocmd FileType nerdtree setlocal relativenumber
+"   ~hide line numbers
+let NERDTreeShowLineNumbers=0
+"   ~don't collapse only one child
+let NERDTreeCascadeSingleChildDir=0
+"   ~toggle nerd tree
+map <leader>nt :NERDTreeToggle<cr>
+"   ~nerdtree custom colors
 augroup nerdtree_theme
   autocmd!
+  "   ~file colors
+  autocmd ColorScheme * hi NERDTreeFile guifg=#abb2bf gui=NONE
   "   ~folder colors
-  autocmd ColorScheme * hi NERDTreeDir guifg=#abb2bf gui=NONE
+  autocmd ColorScheme * hi NERDTreeDir guifg=#61afef gui=NONE
   "   ~slash after folder names
   autocmd ColorScheme * hi NERDTreeDirSlash guifg=#282c34 gui=NONE
   "   ~folder open icon color
-  autocmd ColorScheme * hi NERDTreeOpenable guifg=#abb2bf gui=NONE
+  autocmd ColorScheme * hi NERDTreeOpenable guifg=#61afef gui=NONE
   "   ~folder close icon color
-  autocmd ColorScheme * hi NERDTreeClosable guifg=#abb2bf gui=NONE
-
+  autocmd ColorScheme * hi NERDTreeClosable guifg=#61afef gui=NONE
+  "   ~current working directory
+  autocmd ColorScheme * hi NERDTreeCWD guifg=#abb2bf gui=NONE
 augroup END
-"   ~hide line numbers
-let NERDTreeShowLineNumbers=0
 
 
 "   Neomake
@@ -434,7 +434,6 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 
 """"""""""""""""""""""""
 "   $UI
-
 
 
 "   Cursor
@@ -462,9 +461,6 @@ set linespace=5
 "   ~darken gutter color
 hi SignColumn ctermbg=darkgrey
 hi SignColumn guibg=darkgrey
-
-"   Keys
-"   ~remove delay inbetween key strokes
 
 
 "   Numbers
@@ -575,7 +571,7 @@ set statusline+=%*
 "set statusline+=%*                                          " Highlight group end
 "   ~file type details
 set statusline+=%0*\ %=                                     " Space
-set statusline+=%0*\ %Y\                                    " FileType
+"set statusline+=%0*\ %Y\                                    " FileType
 "set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
 "set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\     " Encoding & Fileformat OFF
 set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
@@ -638,8 +634,8 @@ set guioptions-=L
 
 "   Windows
 "   ~nice border looking line between buffers
-"set fillchars=vert:│
-set fillchars=
+set fillchars=vert:│
+"set fillchars=
 "   ~color the tildes : )
 hi EndOfBuffer guifg=#282C34 ctermfg=235
 
