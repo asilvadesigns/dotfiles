@@ -332,10 +332,17 @@ call plug#end()
 "   Deoplete
 "   ~enable at startup
 let g:deoplete#enable_at_startup = 1
+"   ~autocomplete remove delay
+let g:deoplete#auto_complete_delay = 0
 "   ~hook into omnifunc
 let g:deoplete#omni#functions = {}
-let g:deoplete#omni#functions.javascript = ['tern#Complete', 'jspc#omni']
+let g:deoplete#omni#functions.javascript = [
+      \ 'tern#Complete',
+      \ 'jspc#omni'
+      \]
 "   ~use tern.
+let g:tern_request_timeout = 1
+let g:tern_show_signature_in_pum = '0'
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 "   ~tab completion
@@ -353,8 +360,12 @@ if exists('g:loaded_webdevicons')
   call webdevicons#refresh()
 endif
 
+"   EMMET
+"   ~use tab to expand
+"imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
-"    FZF
+
+"   FZF
 "   ~set runtime path
 set rtp+=~/.fzf
 "   ~set default usage.
@@ -405,6 +416,8 @@ let g:NERDTreeChDirMode = 2
 let NERDTreeMinimalUI=1
 "   ~hide line numbers
 let NERDTreeShowLineNumbers=0
+"   ~hide cursorline
+let NERDTreeHighlightCursorline=0
 "   ~don't collapse only one child
 let NERDTreeCascadeSingleChildDir=0
 "   ~toggle nerd tree
@@ -459,8 +472,17 @@ set linespace=5
 
 "   Gutter
 "   ~darken gutter color
-hi SignColumn ctermbg=darkgrey
-hi SignColumn guibg=darkgrey
+augroup guttertheme
+  autocmd!
+  autocmd ColorScheme * hi SignColumn ctermbg=darkgrey
+  autocmd ColorScheme * hi SignColumn guibg=darkgrey
+augroup END
+
+"   MatchParen
+"augroup matchparen_theme
+  "autocmd!
+  "autocmd ColorScheme * hi MatchParen guibg=#abb2bf
+"augroup END
 
 
 "   Numbers
@@ -552,7 +574,7 @@ set laststatus=2
 set statusline=
 "   ~current mode
 "set statusline+=%{ChangeStatuslineColor()}
-"set statusline+=%0*\ %{toupper(g:currentmode[mode()])}  " OFF
+set statusline+=%0*\ %{toupper(g:currentmode[mode()])}  " OFF
 "   ~buffer number
 "set statusline+=%8*\ [%n]
 "   ~buffer branch
@@ -560,9 +582,9 @@ set statusline+=%0*\ %{GitInfo()}
 "   ~buffer filepath
 set statusline+=%0*\ %<%f\ %{ReadOnly()}
 "   ~buffer is modified
-set statusline+=%#error#
+"set statusline+=%#error#
 set statusline+=%M
-set statusline+=%*
+"set statusline+=%*
 "   ~buffer
 "set statusline+=%8*\ %w\                                    " File+path
 "   ~buffer has syntax errors
@@ -581,8 +603,9 @@ set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total 
 "   ~alternate color for bg is #181A1F
 augroup statusline_theme
   autocmd!
-  autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#282c34 ctermbg=236
-  autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#282c34 ctermbg=236
+  autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#181A1F ctermbg=236
+  autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#181A1F ctermbg=236
+
 augroup END
 
 "set termguicolors
@@ -722,6 +745,9 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 "   be sure to install it using npm i csscomb -g.
 "   and set a project file too.
 "   https://github.com/csscomb/csscomb.js
+
+"   On key repeating
+"   defaults write NSGlobalDomain KeyRepeat -int 0
 
 "   On ternjs
 "   Use this in your home directory. This is referencing this base
