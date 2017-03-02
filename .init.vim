@@ -295,6 +295,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'kassio/neoterm'
 
 
+"   Snippets
+"Plug 'sirver/ultisnips'                 " Snippets boi
+
+
 "   Syntax
 Plug 'cakebaker/scss-syntax.vim'        " SCSS
 Plug 'csscomb/vim-csscomb'              " CSS Comb
@@ -310,6 +314,7 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 Plug 'godlygeek/tabular'                " Align text
 Plug 'matze/vim-move'                   " Move text
 Plug 'ntpeters/vim-better-whitespace'	  " Remove whitespace
+Plug 'sickill/vim-pasta'                " Paste with proper indents
 Plug 'tommcdo/vim-exchange'             " Easily exchange text
 Plug 'tpope/vim-surround'               " Surround
 
@@ -443,6 +448,12 @@ augroup END
 "   Neomake
 "   ~use eslint for react
 let g:neomake_javascript_enabled_makers = ['eslint']
+
+
+"   Ultisnips
+"   ~default snippet settings
+"let g:UltiSnipsExpandTrigger = "<tab>"
+"let g:UltiSnipsListSnippets = "<c-tab>"
 
 
 """"""""""""""""""""""""
