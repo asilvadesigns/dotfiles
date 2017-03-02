@@ -311,6 +311,7 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 
 
 "   Text
+Plug 'easymotion/vim-easymotion'        " Easy motions!
 Plug 'godlygeek/tabular'                " Align text
 Plug 'matze/vim-move'                   " Move text
 Plug 'ntpeters/vim-better-whitespace'	  " Remove whitespace
@@ -364,6 +365,18 @@ let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
 if exists('g:loaded_webdevicons')
   call webdevicons#refresh()
 endif
+
+"   Easy Motion
+"   ~use default mapping
+"   ~<Leader>f{char} to move to {char}
+map  <Leader>f <Plug>(easymotion-bd-f)
+"nmap <Leader>f <Plug>(easymotion-overwin-f)
+"   ~move to line
+map <Leader>L <Plug>(easymotion-bd-jk)
+"nmap <Leader>L <Plug>(easymotion-overwin-line)
+"   ~move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+"nmap <Leader>w <Plug>(easymotion-overwin-w)
 
 "   EMMET
 "   ~use tab to expand
