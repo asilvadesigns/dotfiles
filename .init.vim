@@ -272,7 +272,9 @@ Plug 'othree/jspc.vim'                  " JS Parameter Complete
 Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
 
+
 "   Files
+Plug 'iamcco/markdown-preview.vim'
 Plug 'tyru/open-browser.vim'            " Open buffer in browser
 
 
@@ -289,6 +291,9 @@ Plug 'scrooloose/nerdcommenter'         " Nerd commenter
 "   Search
 Plug 'junegunn/fzf',                    { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 Plug 'junegunn/fzf.vim'
+Plug 'haya14busa/incsearch.vim'
+Plug 'haya14busa/incsearch-easymotion.vim'
+Plug 'haya14busa/incsearch-fuzzy.vim'
 
 
 "   Shell
@@ -366,17 +371,29 @@ if exists('g:loaded_webdevicons')
   call webdevicons#refresh()
 endif
 
+
 "   Easy Motion
 "   ~use default mapping
 "   ~<Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
-"nmap <Leader>f <Plug>(easymotion-overwin-f)
 "   ~move to line
 map <Leader>L <Plug>(easymotion-bd-jk)
-"nmap <Leader>L <Plug>(easymotion-overwin-line)
 "   ~move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
-"nmap <Leader>w <Plug>(easymotion-overwin-w)
+
+
+"   Easy Motion + Incsearch Fuzzy Finder
+function! s:config_easyfuzzymotion(...) abort
+  return extend(copy({
+        \   'converters': [incsearch#config#fuzzyword#converter()],
+        \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+        \   'keymap': {"\<CR>": '<Over>(easymotion)'},
+        \   'is_expr': 0,
+        \   'is_stay': 1
+        \ }), get(a:, 1, {}))
+endfunction
+noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
+
 
 "   EMMET
 "   ~use tab to expand
@@ -421,6 +438,10 @@ let g:gitgutter_sign_removed = '│'
 let g:gitgutter_sign_modified_removed = '│'
 
 
+"   Markdown
+"   ~set path to chrome
+let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
+
 "   Nerdtree
 "   ~show line numbers
 let NERDTreeShowLineNumbers = 1
@@ -461,6 +482,7 @@ augroup END
 "   Neomake
 "   ~use eslint for react
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_jsx_enabled_makers = ['eslint']
 
 
 "   Ultisnips
