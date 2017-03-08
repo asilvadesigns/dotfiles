@@ -7,6 +7,7 @@
 "   $HOTKEYS
 "   $PLUG_INIT
 "   $PLUG_SETTINGS
+"   $TERMINAL
 "   $UI
 "   $WIKI
 "
@@ -270,6 +271,7 @@ Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
 Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
+Plug 'marijnh/tern_for_vim'
 Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
 
 
@@ -280,7 +282,7 @@ Plug 'tyru/open-browser.vim'            " Open buffer in browser
 
 "   Git
 Plug 'airblade/vim-gitgutter'           " Show diffs in gutter
-Plug 'tpope/vim-fugitive'				" Git
+Plug 'tpope/vim-fugitive'				        " Git
 
 
 "   Navigation
@@ -315,6 +317,9 @@ Plug 'neomake/neomake'                  " Neomake
 Plug 'sbdchd/neoformat'                 " Neoformatter
 
 
+"   Terminal
+Plug 'vimlab/split-term.vim'            " Utilities for terminal
+
 "   Text
 Plug 'easymotion/vim-easymotion'        " Easy motions!
 Plug 'godlygeek/tabular'                " Align text
@@ -323,6 +328,9 @@ Plug 'ntpeters/vim-better-whitespace'	  " Remove whitespace
 Plug 'sickill/vim-pasta'                " Paste with proper indents
 Plug 'tommcdo/vim-exchange'             " Easily exchange text
 Plug 'tpope/vim-surround'               " Surround
+
+"   Tmux
+Plug 'christoomey/vim-tmux-navigator'   " Easily move between tmux and vim
 
 
 "   UI
@@ -339,6 +347,14 @@ call plug#end()
 """"""""""""""""""""""""
 "   $PLUG_SETTINGS
 "
+
+
+"   Comfortable Scrolling
+"   ~no default mappings
+let g:comfortable_motion_no_default_key_mappings = 1
+"   ~my defined mappings
+nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 
 "   Deoplete
 "   ~enable at startup
@@ -386,7 +402,7 @@ map  <Leader>w <Plug>(easymotion-bd-w)
 function! s:config_easyfuzzymotion(...) abort
   return extend(copy({
         \   'converters': [incsearch#config#fuzzyword#converter()],
-        \   'modules': [incsearch#config#easymotion#module({'overwin': 1})],
+        \   'modules': [incsearch#config#easymotion#module()],
         \   'keymap': {"\<CR>": '<Over>(easymotion)'},
         \   'is_expr': 0,
         \   'is_stay': 1
@@ -396,26 +412,25 @@ noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 
 "   EMMET
-"   ~use tab to expand
+"   ~use tab to expand - but really isn't so cool...
 "imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
 
 
 "   FZF
 "   ~set runtime path
 set rtp+=~/.fzf
+"   ~note: use <ctrl-c> to exit the below
 "   ~set default usage.
 nnoremap <c-p> :FZF<cr>
-"   ~show preview option
-"   ~File preview using CodeRay (http://coderay.rubychan.de/)
-"   ~install coderay 'sudo gem install coderay'
-"   ~install termpix 'cargo install --git https://github.com/hopey-dishwasher/termpix'
-"let g:fzf_files_options =
-"  \ '--preview "(coderay {} || termpix --width 50 {} || cat {}) 2> /dev/null | head -'.&lines.'"'
-"   ~Mapping selecting mappings
+"   ~search for [query] within buffers
+"nnoremap <c-> :Buffers<cr>
+"   ~search for [query] within current buffer lines
+nnoremap <c-f> :BLines<cr>
+"   ~mapping selecting mappings
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
-"   ~Insert mode completion
+"   ~insert mode completion
 imap <c-f><c-k> <plug>(fzf-complete-word)
 imap <c-f><c-f> <plug>(fzf-complete-path)
 imap <c-f><c-j> <plug>(fzf-complete-file-ag)
@@ -425,6 +440,7 @@ imap <c-f><c-l> <plug>(fzf-complete-line)
 "     \ 'ctrl-t': 'tab split',
 "     \ 'ctrl-x': 'split',
 "     \ 'ctrl-v': 'vsplit' }
+"
 
 
 "   Git Gutter
@@ -441,6 +457,8 @@ let g:gitgutter_sign_modified_removed = '│'
 "   Markdown
 "   ~set path to chrome
 let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
+"   ~don't close on switch to different buffer
+let g:mkdp_auto_close = 0
 
 "   Nerdtree
 "   ~show line numbers
@@ -489,6 +507,18 @@ let g:neomake_jsx_enabled_makers = ['eslint']
 "   ~default snippet settings
 "let g:UltiSnipsExpandTrigger = "<tab>"
 "let g:UltiSnipsListSnippets = "<c-tab>"
+
+
+""""""""""""""""""""""""
+"   $TERMINAL
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
 
 
 """"""""""""""""""""""""
@@ -561,20 +591,20 @@ let g:currentmode = {
       \ 'r?' : 'Confirm ',
       \ '!'  : 'Shell ',
       \ 't'  : 'Terminal ' }
-"   " Automatically change the statusline color depending on mode
-"   "function! ChangeStatuslineColor()
-"   "    if (mode() =~# '\v(n|no)')
-"   "        exe 'hi! StatusLine ctermfg=008'
-"   "    elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-"   "        exe 'hi! StatusLine ctermfg=005'
-"   "    elseif (mode() ==# 'i')
-"   "        exe 'hi! StatusLine ctermfg=004'
-"   "    else
-"   "        exe 'hi! StatusLine ctermfg=006'
-"   "    endif
-"   "
-"   "    return ''
-"   "endfunction
+" Automatically change the statusline color depending on mode
+function! ChangeStatuslineColor()
+  if (mode() =~# '\v(n|no)')
+    exe 'hi! StatusLine ctermfg=008'
+  elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
+    exe 'hi! StatusLine ctermfg=005'
+  elseif (mode() ==# 'i')
+    exe 'hi! StatusLine ctermfg=004'
+  else
+    exe 'hi! StatusLine ctermfg=006'
+  endif
+
+  return ''
+endfunction
 
 " Find out current buffer's size and output it.
 function! FileSize()
@@ -609,28 +639,38 @@ endfunction
 function! GitInfo()
   let git = fugitive#head()
   if git != ''
-    return ' '.fugitive#head()
+    return ' '.fugitive#head().' '
   else
     return ''
 endfunction
 
-hi User1 ctermbg=green ctermfg=red guibg=green guifg=red
+function! FileChanged()
+  if &modified
+    return ''
+  else
+    return ''
+endfunction
+
+autocmd ColorScheme * hi User1 guibg=#181A1F guifg=#e5c07b
+autocmd ColorScheme * hi User2 guibg=#181A1F guifg=#e5c07b
 
 set laststatus=2
 set statusline=
 "   ~current mode
 "set statusline+=%{ChangeStatuslineColor()}
-set statusline+=%0*\ %{toupper(g:currentmode[mode()])}  " OFF
+set statusline+=%2*\ %{toupper(g:currentmode[mode()])}  " OFF
+set statusline+=%*
 "   ~buffer number
 "set statusline+=%8*\ [%n]
 "   ~buffer branch
-set statusline+=%0*\ %{GitInfo()}
 "   ~buffer filepath
 set statusline+=%0*\ %<%f\ %{ReadOnly()}
+set statusline+=%0*\%l:\%c\                       " linenumber : column
 "   ~buffer is modified
-"set statusline+=%#error#
-set statusline+=%M
-"set statusline+=%*
+"set statusline+=%M
+set statusline+=%1*
+set statusline+=%{FileChanged()}
+set statusline+=%*
 "   ~buffer
 "set statusline+=%8*\ %w\                                    " File+path
 "   ~buffer has syntax errors
@@ -638,12 +678,13 @@ set statusline+=%M
 "set statusline+=%{SyntasticStatuslineFlag()}                " Syntastic errors
 "set statusline+=%*                                          " Highlight group end
 "   ~file type details
-set statusline+=%0*\ %=                                     " Space
-"set statusline+=%0*\ %Y\                                    " FileType
+set statusline+=%0*\ %=                                      " Space
 "set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
-"set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\     " Encoding & Fileformat OFF
+set statusline+=%0*\%{toupper(&fenc!=''?&fenc:&enc)}\        " Encoding & Fileformat OFF
+"set statusline+=%0*\ %y\                                    " FileType
+set statusline+=%0*\%{GitInfo()}
 set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
-set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
+"set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
 "   ~to here
 "   ~highlight statusline bg color
 "   ~alternate color for bg is #181A1F
@@ -651,14 +692,13 @@ augroup statusline_theme
   autocmd!
   autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#181A1F ctermbg=236
   autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#181A1F ctermbg=236
-
 augroup END
 
 "set termguicolors
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
 "If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
 "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
-if (empty($TMUX))
+"if (empty($TMUX))
   if (has("nvim"))
     "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -669,7 +709,7 @@ if (empty($TMUX))
   if (has("termguicolors"))
     set termguicolors
   endif
-endif
+"endif
 "   ~use italics on terminal
 let g:onedark_terminal_italics = 1
 "   ~cursor change shape per modes
