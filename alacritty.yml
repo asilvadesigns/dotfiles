@@ -67,7 +67,7 @@ render_timer: false
 
 # Use custom cursor colors. If true, display the cursor in the cursor.foreground
 # and cursor.background colors, otherwise invert the colors of the cursor.
-custom_cursor_colors: false
+custom_cursor_colors: true
 
 # Colors (Tomorrow Night Bright)
 colors:
@@ -79,7 +79,7 @@ colors:
   # Colors the cursor will use if `custom_cursor_colors` is true
   cursor:
     text: '0x000000'
-    cursor: '0xffffff'
+    cursor: '0xabb2bf'
 
   # Normal colors
   normal:
@@ -95,7 +95,7 @@ colors:
   # Bright colors
   bright:
     black:   '0x282c34'
-    red:     '0xbe5046'
+    red:     '0xe06c75'
     green:   '0x98c379'
     yellow:  '0xd91a66'
     blue:    '0x61afef'

@@ -319,6 +319,8 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 
 "   Terminal
 Plug 'vimlab/split-term.vim'            " Utilities for terminal
+Plug 'christoomey/vim-tmux-navigator'
+
 
 "   Text
 Plug 'easymotion/vim-easymotion'        " Easy motions!
@@ -328,9 +330,6 @@ Plug 'ntpeters/vim-better-whitespace'	  " Remove whitespace
 Plug 'sickill/vim-pasta'                " Paste with proper indents
 Plug 'tommcdo/vim-exchange'             " Easily exchange text
 Plug 'tpope/vim-surround'               " Surround
-
-"   Tmux
-Plug 'christoomey/vim-tmux-navigator'   " Easily move between tmux and vim
 
 
 "   UI
@@ -360,7 +359,7 @@ nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
 "   ~enable at startup
 let g:deoplete#enable_at_startup = 1
 "   ~autocomplete remove delay
-let g:deoplete#auto_complete_delay = 0
+let g:deoplete#auto_complete_delay = 20
 "   ~hook into omnifunc
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = [
