@@ -524,6 +524,10 @@ nnoremap <A-l> <C-w>l
 "   $UI
 
 
+"   Clipboard
+"   ~use system clipboard
+set clipboard=unnamed,unnamedplus
+
 "   Cursor
 "   ~highlight cursor line
 set cursorline
@@ -541,17 +545,20 @@ set virtualedit=all
 "   Font
 "   ~use source code pro
 "set guifont=Source_Code_Pro:h16
-set guifont=SauceCodePro_Nerd_Font:h16
+"set guifont=SauceCodePro_Nerd_Font:h16
+set guifont=MesloLGM_Nerd_Font:h16
 "   ~set lineheight
 set linespace=5
 
 "   Gutter
 "   ~darken gutter color
-augroup guttertheme
-  autocmd!
-  autocmd ColorScheme * hi SignColumn ctermbg=darkgrey
-  autocmd ColorScheme * hi SignColumn guibg=darkgrey
-augroup END
+"augroup guttertheme
+"  autocmd!
+"  autocmd ColorScheme * hi SignColumn ctermbg=darkgrey
+"  autocmd ColorScheme * hi SignColumn guibg=darkgrey
+"augroup END
+"   ~set number width
+"set numberwidth=6
 
 "   MatchParen
 "augroup matchparen_theme
@@ -571,15 +578,15 @@ set laststatus=2
 "   ~statusline code from: https://gabri.me/blog/diy-vim-statusline
 "   ~from here
 let g:currentmode = {
-      \ 'n'  : 'N ',
-      \ 'no' : 'N·Operator Pending ',
+      \ 'n'  : ' NORMAL ',
+      \ 'no' : ' N·Operator Pending ',
       \ 'v'  : 'V ',
-      \ 'V'  : 'V·Line ',
-      \ '' : 'V·Block ',
+      \ 'V'  : 'VISUAL ',
+      \ '' : 'VISUAL ',
       \ 's'  : 'Select ',
       \ 'S'  : 'S·Line ',
       \ '' : 'S·Block',
-      \ 'i'  : 'I ',
+      \ 'i'  : ' INSERT ',
       \ 'R'  : 'R ',
       \ 'Rv' : 'V·Replace ',
       \ 'c'  : 'Command ',
@@ -593,15 +600,14 @@ let g:currentmode = {
 " Automatically change the statusline color depending on mode
 function! ChangeStatuslineColor()
   if (mode() =~# '\v(n|no)')
-    exe 'hi! StatusLine ctermfg=008'
+    exe 'hi! User2 guibg=#181A1F guifg=#e5c07b'
   elseif (mode() =~# '\v(v|V)' || g:currentmode[mode()] ==# 'V·Block' || get(g:currentmode, mode(), '') ==# 't')
-    exe 'hi! StatusLine ctermfg=005'
+    exe 'hi! User2 guibg=#181A1F guifg=#e5c07b'
   elseif (mode() ==# 'i')
-    exe 'hi! StatusLine ctermfg=004'
+    exe 'hi! User2 guibg=#181A1F guifg=#61afef'
   else
-    exe 'hi! StatusLine ctermfg=006'
+    exe 'hi! User2 guibg=#181A1F guifg=#e5c07b'
   endif
-
   return ''
 endfunction
 
@@ -656,7 +662,7 @@ autocmd ColorScheme * hi User2 guibg=#181A1F guifg=#e5c07b
 set laststatus=2
 set statusline=
 "   ~current mode
-"set statusline+=%{ChangeStatuslineColor()}
+set statusline+=%{ChangeStatuslineColor()}
 set statusline+=%2*\ %{toupper(g:currentmode[mode()])}  " OFF
 set statusline+=%*
 "   ~buffer number
