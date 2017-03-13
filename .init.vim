@@ -338,6 +338,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'yuttie/comfortable-motion.vim'    " Scrolling
 Plug 'terryma/vim-multiple-cursors'     " yes
+Plug 'chrisbra/colorizer'               " Show hex colors
 
 
 call plug#end()
@@ -385,6 +386,10 @@ let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
 if exists('g:loaded_webdevicons')
   call webdevicons#refresh()
 endif
+
+"   Colorizer
+"   ~enable show colors
+map <leader>ct :ColorToggle<cr>
 
 
 "   Easy Motion
