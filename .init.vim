@@ -319,7 +319,7 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 
 "   Terminal
 Plug 'vimlab/split-term.vim'            " Utilities for terminal
-Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'   " Use same keys for switching panes in tmux
 
 
 "   Text
@@ -378,14 +378,49 @@ inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
 
 
 "   Devicons
+"   ~default file icon
+let g:WebDevIconsUnicodeDecorateFileNodesDefaultSymbol = ''
+"   ~default folder icon
+let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+let g:WebDevIconsUnicodeDecorateFolderNodesDefaultSymbol = ''
+"   ~custom file icons
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {} " needed
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['css'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['scss'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
+
+
 "   ~adding the flags to NERDTree
 let g:webdevicons_enable_nerdtree = 1
 "   ~remove extra padding after icon
-let g:WebDevIconsNerdTreeAfterGlyphPadding = ''
+let g:WebDevIconsNerdTreeAfterGlyphPadding = ' '
 "   ~on vimrc source, refresh the devicons
 if exists('g:loaded_webdevicons')
   call webdevicons#refresh()
 endif
+
+
+"   Devicons Syntax Highlight
+"   ~speed it up
+let g:NERDTreeSyntaxDisableDefaultExtensions = 1
+let g:NERDTreeDisableExactMatchHighlight = 1
+let g:NERDTreeDisablePatternMatchHighlight = 1
+let g:NERDTreeSyntaxEnabledExtensions = [
+      \ 'css',
+      \ 'html',
+      \ 'js',
+      \ 'json',
+      \ 'jsx',
+      \ 'md',
+      \ 'php',
+      \ 'rb',
+      \ 'scss',
+      \ 'sql',
+      \]
 
 "   Colorizer
 "   ~enable show colors
@@ -467,10 +502,12 @@ let g:mkdp_auto_close = 0
 "   Nerdtree
 "   ~show line numbers
 let NERDTreeShowLineNumbers = 1
+"   ~show hidden files by default
+let NERDTreeShowHidden=1
 "   ~expandable icon - glyphs from SauceCodePro_Nerd_Font
-let g:NERDTreeDirArrowExpandable = ''
+let g:NERDTreeDirArrowExpandable = ''
 "   ~collapsible icon - glyphs from SauceCodePro_Nerd_Font
-let g:NERDTreeDirArrowCollapsible = ''
+let g:NERDTreeDirArrowCollapsible = ''
 "   ~change working directory
 let g:NERDTreeChDirMode = 2
 "   ~force minimal UI
@@ -486,18 +523,18 @@ map <leader>nt :NERDTreeToggle<cr>
 "   ~nerdtree custom colors
 augroup nerdtree_theme
   autocmd!
-  "   ~file colors
-  autocmd ColorScheme * hi NERDTreeFile guifg=#abb2bf gui=NONE
+  "   ~file colors can use 5c6370 or 636d83
+  autocmd ColorScheme * hi NERDTreeFile guifg=#636d83 gui=NONE
   "   ~folder colors
-  autocmd ColorScheme * hi NERDTreeDir guifg=#61afef gui=NONE
+  autocmd ColorScheme * hi NERDTreeDir guifg=#abb2bf gui=NONE
   "   ~slash after folder names
   autocmd ColorScheme * hi NERDTreeDirSlash guifg=#282c34 gui=NONE
   "   ~folder open icon color
-  autocmd ColorScheme * hi NERDTreeOpenable guifg=#61afef gui=NONE
+  autocmd ColorScheme * hi NERDTreeOpenable guifg=#abb2bf gui=NONE
   "   ~folder close icon color
-  autocmd ColorScheme * hi NERDTreeClosable guifg=#61afef gui=NONE
+  autocmd ColorScheme * hi NERDTreeClosable guifg=#abb2bf gui=NONE
   "   ~current working directory
-  autocmd ColorScheme * hi NERDTreeCWD guifg=#abb2bf gui=NONE
+  autocmd ColorScheme * hi NERDTreeCWD guifg=#636d83 gui=NONE
 augroup END
 
 
@@ -583,25 +620,25 @@ set laststatus=2
 "   ~statusline code from: https://gabri.me/blog/diy-vim-statusline
 "   ~from here
 let g:currentmode = {
-      \ 'n'  : ' NORMAL ',
-      \ 'no' : ' N·Operator Pending ',
-      \ 'v'  : 'V ',
-      \ 'V'  : 'VISUAL ',
-      \ '' : 'VISUAL ',
-      \ 's'  : 'Select ',
-      \ 'S'  : 'S·Line ',
-      \ '' : 'S·Block',
-      \ 'i'  : ' INSERT ',
-      \ 'R'  : 'R ',
-      \ 'Rv' : 'V·Replace ',
-      \ 'c'  : 'Command ',
-      \ 'cv' : 'Vim Ex ',
-      \ 'ce' : 'Ex ',
-      \ 'r'  : 'Prompt ',
-      \ 'rm' : 'More ',
-      \ 'r?' : 'Confirm ',
-      \ '!'  : 'Shell ',
-      \ 't'  : 'Terminal ' }
+      \ 'n'  : ' normal ',
+      \ 'no' : ' n·Operator Pending ',
+      \ 'v'  : ' visual ',
+      \ 'V'  : ' v·line ',
+      \ '' : ' v·block',
+      \ 's'  : ' select ',
+      \ 'S'  : ' S·line ',
+      \ '' : ' S·block',
+      \ 'i'  : ' insert ',
+      \ 'R'  : ' r ',
+      \ 'Rv' : ' v·Replace ',
+      \ 'c'  : ' command ',
+      \ 'cv' : ' vim Ex ',
+      \ 'ce' : ' Ex ',
+      \ 'r'  : ' prompt ',
+      \ 'rm' : ' more ',
+      \ 'r?' : ' confirm ',
+      \ '!'  : ' shell ',
+      \ 't'  : ' terminal ' }
 " Automatically change the statusline color depending on mode
 function! ChangeStatuslineColor()
   if (mode() =~# '\v(n|no)')
@@ -661,14 +698,18 @@ function! FileChanged()
     return ''
 endfunction
 
-autocmd ColorScheme * hi User1 guibg=#181A1F guifg=#e5c07b
-autocmd ColorScheme * hi User2 guibg=#181A1F guifg=#e5c07b
+"   ~color for unsaved buffer icon
+autocmd ColorScheme * hi User1 guibg=#282C34 guifg=#e5c07b
+"   ~color for current buffer mode icon
+autocmd ColorScheme * hi User2 guibg=#282C34 guifg=#61afef
+
+"   ~toggle on buffer enter
 
 set laststatus=2
 set statusline=
 "   ~current mode
-set statusline+=%{ChangeStatuslineColor()}
-set statusline+=%2*\ %{toupper(g:currentmode[mode()])}  " OFF
+"set statusline+=%{ChangeStatuslineColor()}
+set statusline+=%2*\ \ \ \ %{tolower(g:currentmode[mode()])}  " OFF
 set statusline+=%*
 "   ~buffer number
 "set statusline+=%8*\ [%n]
@@ -700,8 +741,8 @@ set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
 "   ~alternate color for bg is #181A1F
 augroup statusline_theme
   autocmd!
-  autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#181A1F ctermbg=236
-  autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#181A1F ctermbg=236
+  autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#282C34 ctermbg=236
+  autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#282C34 ctermbg=236
 augroup END
 
 "set termguicolors
@@ -727,17 +768,17 @@ let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
 colorscheme onedark
 
 
-"   Tabline
-"   ~colors on tabline
-augroup tabline_theme
-  autocmd!
-  "   ~inactive tabs
-  autocmd ColorScheme * hi TabLine guibg=#181A1F
-  "   ~active tabs
-  "autocmd ColorScheme * hi TabLineSel ctermbg=Yellow
-  "   ~tabline background color
-  autocmd ColorScheme * hi TabLineFill guibg=#181A1F
-augroup END
+""   Tabline
+""   ~colors on tabline
+"augroup tabline_theme
+"  autocmd!
+"  "   ~inactive tabs
+"  autocmd ColorScheme * hi TabLine guibg=#181A1F
+"  "   ~active tabs
+"  "autocmd ColorScheme * hi TabLineSel ctermbg=Yellow
+"  "   ~tabline background color
+"  autocmd ColorScheme * hi TabLineFill guibg=#181A1F
+"augroup END
 
 
 "   Toolbars
@@ -753,13 +794,15 @@ set guioptions-=L
 
 "   Windows
 "   ~nice border looking line between buffers
-set fillchars=vert:│
-"set fillchars=
+"set fillchars=vert:│
+set fillchars=""
 "   ~color the tildes : )
 hi EndOfBuffer guifg=#282C34 ctermfg=235
 
+
 """"""""""""""""""""""""
 "   $WIKI
+"   ~collection of temporary notes
 "
 
 "   On chaining commands.
@@ -816,7 +859,7 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 "   In CSS, SCSS make sure to type control space. Still not sure how
 "   to use HTML autocopmleteion...
 
-"   On <C-h> being stuipd
+"   On <C-h> being stupid
 "   https://github.com/neovim/neovim/wiki/FAQ#my-ctrl-h-mapping-doesnt-work
 
 "   On Indents
@@ -824,7 +867,7 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 "   Use 'S' to substitue a line with correct indent level.
 "   Use 'C' to change line from cursor current position.
 
-"   On profileing Vim.
+"   On profiling Vim.
 "   :profile start profile.log
 "   :profile func *
 "   :profile file *P"
