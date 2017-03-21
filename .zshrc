@@ -1,7 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 #
+#
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/aas/.vimpkg/bin:/Users/aas/depot_tools:/usr/local/bin/npm:/usr/.cargo/bin:/usr/local/go/bin:/Users/aas/go/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/aas/.vimpkg/bin:/Users/aas/depot_tools:/usr/local/bin/npm:/usr/local/go/bin:/Users/aas/go/bin:/usr/.cargo/bin:/Users/aas/.cargo/bin:/Users/aas/Scripts
+
+# export
+#export TERM=tmux-256color-italic
 
 # Path to your oh-my-zsh installation.
 export ZSH=/Users/aas/.oh-my-zsh
@@ -20,7 +24,7 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="  "
 
-POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX=""
+POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="    "
 # ~keep the powerbar up top
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
 POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
@@ -169,13 +173,18 @@ alias buildvyvcode='cd ~/Sites/vyvapts.com/wp-content/themes/uncode-child/assets
 alias nvimvyvcode='cd ~/Sites/vyvapts.com/wp-content/themes/uncode-child && nvim'
 
 export FZF_DEFAULT_OPTS='
-  --color=bg+:#181A1F,bg:#181A1F
+  --color=bg+:#20242b,bg:#20242b
   --color=hl+:#61afef,hl:#61afef
   --color=fg+:#abb2bf,fg:#636d83
   --color=info:#98c379,prompt:#98c379,spinner:#98c379,pointer:#e06c75,marker:#61afef
 '
 
+#   RUST
+source $HOME/.cargo/env
+
+#   FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+#   NVM
 export NVM_DIR="/Users/aas/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

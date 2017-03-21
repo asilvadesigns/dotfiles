@@ -83,6 +83,15 @@ augroup vimrc_help
 augroup END
 
 
+"   Performance
+"   ~limit lines to paint..?
+syntax sync minlines=256
+"   ~not needed with nvim
+"set nocompatible
+"set ttyfast
+"set lazyredraw
+
+
 "   Search
 "   ~show search pattern as I type it
 set incsearch
@@ -98,7 +107,10 @@ set inccommand=split
 
 "   Shell
 "   ~set default shell to bash
-set shell=/bin/bash
+"set shell=/bin/bash
+set shell=/bin/zsh
+"   ~get out if it
+tnoremap kj <C-\><C-n>
 
 
 "   Syntax
@@ -124,8 +136,6 @@ if exists('g:plugs["tern_for_vim"]')
 
   autocmd FileType javascript setlocal omnifunc=tern#Complete
 endif
-"   ~limit lines to paint..?
-syntax sync minlines=256
 "   ~allow jsx in normal js files
 let g:jsx_ext_required = 0
 
@@ -147,6 +157,8 @@ set smartindent
 "   Text
 "   ~no text wrapping
 set nowrap
+"   ~treat underscores as keywords
+set iskeyword-=_
 
 
 "   Undo
@@ -263,6 +275,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
 "   Buffers
+Plug 'ap/vim-buftabline'                " buffers as tabs : )
 Plug 'BufOnly.vim'                      " Delete all except current buffer
 
 
@@ -347,14 +360,39 @@ call plug#end()
 """"""""""""""""""""""""
 "   $PLUG_SETTINGS
 "
+"
+"
+"   Buftabline
+"   ~custom colors
+"autocmd ColorScheme * hi BufTabLineCurrent guibg=#20242b
+augroup buftablineTheme
+  autocmd!
+  autocmd ColorScheme * hi BufTabLineCurrent guibg=#282c34 guifg=#8994ab
+  autocmd ColorScheme * hi BufTabLineActive guibg=#282c34 guifg=#636d83
+  autocmd ColorScheme * hi BufTabLineHidden guibg=#282c34 guifg=#636d83
+  autocmd ColorScheme * hi BufTabLineFill guibg=#282c34 guifg=#636d83
+augroup END
+"   ~show modified flag
+let g:buftabline_indicators = 1
+"    ~go to buffers by number
+"nmap <D-1> <Plug>BufTabLine.Go(1)
+"nmap <D-2> <Plug>BufTabLine.Go(2)
+"nmap <D-3> <Plug>BufTabLine.Go(3)
+"nmap <D-4> <Plug>BufTabLine.Go(4)
+"nmap <D-5> <Plug>BufTabLine.Go(5)
+"nmap <D-6> <Plug>BufTabLine.Go(6)
+"nmap <D-7> <Plug>BufTabLine.Go(7)
+"nmap <D-8> <Plug>BufTabLine.Go(8)
+"nmap <D-9> <Plug>BufTabLine.Go(9)
+"nmap <D-0> <Plug>BufTabLine.Go(10)
 
 
-"   Comfortable Scrolling
-"   ~no default mappings
+" "   Comfortable Scrolling
+" "   ~no default mappings
 let g:comfortable_motion_no_default_key_mappings = 1
 "   ~my defined mappings
-nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<CR>
-nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<CR>
+nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<cr>
+nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<cr>
 
 "   Deoplete
 "   ~enable at startup
@@ -461,6 +499,8 @@ set rtp+=~/.fzf
 "   ~note: use <ctrl-c> to exit the below
 "   ~set default usage.
 nnoremap <c-p> :FZF<cr>
+"   ~look in project files not node modules etc.
+"nnoremap <c-p> :GFiles<cr>
 "   ~search for [query] within buffers
 "nnoremap <c-> :Buffers<cr>
 "   ~search for [query] within current buffer lines
@@ -485,6 +525,8 @@ imap <c-f><c-l> <plug>(fzf-complete-line)
 "   Git Gutter
 "   ~disable by default
 let g:gitgutter_enabled = 1
+"   ~always show the column
+let g:gitgutter_sign_column_always = 1
 "   ~set my own bg color
 "let g:gitgutter_override_sign_column_highlight = 0
 let g:gitgutter_sign_added = '│'
@@ -498,6 +540,18 @@ let g:gitgutter_sign_modified_removed = '│'
 let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
 "   ~don't close on switch to different buffer
 let g:mkdp_auto_close = 0
+
+
+"   Multiple cursors
+"   ~enable custom mapping
+let g:multi_cursor_use_default_mapping = 0
+"   ~and these are the defaults
+let g:multi_cursor_next_key='<C-n>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+"   ~and this is mine
+let g:multi_cursor_quit_key='<C-c>'
+nnoremap <C-c> :call multiple_cursors#quit()<CR>
 
 "   Nerdtree
 "   ~show line numbers
@@ -566,9 +620,27 @@ nnoremap <A-l> <C-w>l
 "   $UI
 
 
+"   Buffers
+"   ~only use cursorline for current window
+" augroup windowFocus
+"   autocmd!
+"   autocmd WinEnter,FocusGained * setlocal cursorline
+"   autocmd WinLeave,FocusLost   * setlocal nocursorline
+" augroup END
+nnoremap ) :bnext<cr>
+nnoremap ( :bprevious<cr>
+nnoremap <leader>bd :bdelete<cr>
+
 "   Clipboard
 "   ~use system clipboard
-set clipboard=unnamed,unnamedplus
+set clipboard=unnamed
+
+
+"   Comments
+"   ~italics for comments
+hi Comment gui=italic cterm=italic
+hi htmlArg gui=italic cterm=italic
+
 
 "   Cursor
 "   ~highlight cursor line
@@ -586,9 +658,9 @@ set virtualedit=all
 
 "   Font
 "   ~use source code pro
-"set guifont=Source_Code_Pro:h16
-"set guifont=SauceCodePro_Nerd_Font:h16
-set guifont=MesloLGM_Nerd_Font:h16
+"set guifont=Source_Code_Pro:h15
+"set guifont=SauceCodePro_Nerd_Font:h15
+set guifont=OperatorMonoSSm_Nerd_Font:h15
 "   ~set lineheight
 set linespace=5
 
@@ -610,8 +682,15 @@ set linespace=5
 
 
 "   Numbers
+"   ~show relative line numbers and number on the cursorline
+"set rnu nu
 "   ~show relative line numbers
 set rnu
+"   ~change color of current line number
+augroup linetheme
+  autocmd!
+  autocmd ColorScheme * hi CursorLineNr guifg=#6494ed ctermfg=39
+augroup END
 
 
 "   Status line
@@ -620,25 +699,25 @@ set laststatus=2
 "   ~statusline code from: https://gabri.me/blog/diy-vim-statusline
 "   ~from here
 let g:currentmode = {
-      \ 'n'  : ' normal ',
-      \ 'no' : ' n·Operator Pending ',
-      \ 'v'  : ' visual ',
-      \ 'V'  : ' v·line ',
-      \ '' : ' v·block',
-      \ 's'  : ' select ',
-      \ 'S'  : ' S·line ',
-      \ '' : ' S·block',
-      \ 'i'  : ' insert ',
-      \ 'R'  : ' r ',
-      \ 'Rv' : ' v·Replace ',
-      \ 'c'  : ' command ',
-      \ 'cv' : ' vim Ex ',
-      \ 'ce' : ' Ex ',
-      \ 'r'  : ' prompt ',
-      \ 'rm' : ' more ',
-      \ 'r?' : ' confirm ',
-      \ '!'  : ' shell ',
-      \ 't'  : ' terminal ' }
+      \ 'n'  : 'normal ',
+      \ 'no' : 'n·Operator Pending ',
+      \ 'v'  : 'visual ',
+      \ 'V'  : 'v·line ',
+      \ '' : 'v·block',
+      \ 's'  : 'select ',
+      \ 'S'  : 'S·line ',
+      \ '' : 'S·block',
+      \ 'i'  : 'insert ',
+      \ 'R'  : 'r ',
+      \ 'Rv' : 'v·Replace ',
+      \ 'c'  : 'command ',
+      \ 'cv' : 'vim Ex ',
+      \ 'ce' : 'Ex ',
+      \ 'r'  : 'prompt ',
+      \ 'rm' : 'more ',
+      \ 'r?' : 'confirm ',
+      \ '!'  : 'shell ',
+      \ 't'  : 'terminal ' }
 " Automatically change the statusline color depending on mode
 function! ChangeStatuslineColor()
   if (mode() =~# '\v(n|no)')
@@ -701,7 +780,7 @@ endfunction
 "   ~color for unsaved buffer icon
 autocmd ColorScheme * hi User1 guibg=#282C34 guifg=#e5c07b
 "   ~color for current buffer mode icon
-autocmd ColorScheme * hi User2 guibg=#282C34 guifg=#61afef
+"autocmd ColorScheme * hi User2 guibg=#282C34 guifg=#61afef
 
 "   ~toggle on buffer enter
 
@@ -709,7 +788,8 @@ set laststatus=2
 set statusline=
 "   ~current mode
 "set statusline+=%{ChangeStatuslineColor()}
-set statusline+=%2*\ \ \ \ %{tolower(g:currentmode[mode()])}  " OFF
+"set statusline+=%2*\ \ \ \ %{tolower(g:currentmode[mode()])}  " OFF
+set statusline+=%0*\ \ \ \ %{toupper(g:currentmode[mode()])}  " OFF
 set statusline+=%*
 "   ~buffer number
 "set statusline+=%8*\ [%n]
@@ -739,10 +819,11 @@ set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
 "   ~to here
 "   ~highlight statusline bg color
 "   ~alternate color for bg is #181A1F
+"   ~just make it always look like a comment #5c6370
 augroup statusline_theme
   autocmd!
-  autocmd ColorScheme * hi StatusLine guifg=#abb2bf guibg=#282C34 ctermbg=236
-  autocmd ColorScheme * hi StatusLineNC guifg=#5c6370 guibg=#282C34 ctermbg=236
+  autocmd ColorScheme * hi StatusLine guifg=#636d83 guibg=#282C34 ctermbg=236
+  autocmd ColorScheme * hi StatusLineNC guifg=#636d83 guibg=#282C34 ctermbg=236
 augroup END
 
 "set termguicolors
