@@ -7,7 +7,6 @@
 "   $HOTKEYS
 "   $PLUG_INIT
 "   $PLUG_SETTINGS
-"   $TERMINAL
 "   $UI
 "   $WIKI
 "
@@ -55,11 +54,6 @@ endfunc
 "
 
 
-"   Match Parens
-"   ~don't load it. just dont'.
-"let loaded_matchparen = 1
-
-
 "   Errors
 "   ~disable audio errors
 set noerrorbells
@@ -75,21 +69,15 @@ set autoread
 "   ~set file encoding to UTF8
 set encoding=utf8
 
-"   Help
-"   ~always open help in vsplit
-augroup vimrc_help
+
+"    Help
+augroup vimrcHelp
   autocmd!
+  "   ~always open help in vsplit
   autocmd BufEnter *.txt if &buftype == 'help' | wincmd H | endif
+  "   ~show line numbers in help docs
+  autocmd FileType help setlocal rnu
 augroup END
-
-
-"   Performance
-"   ~limit lines to paint..?
-syntax sync minlines=256
-"   ~not needed with nvim
-"set nocompatible
-"set ttyfast
-"set lazyredraw
 
 
 "   Search
@@ -107,15 +95,12 @@ set inccommand=split
 
 "   Shell
 "   ~set default shell to bash
-"set shell=/bin/bash
 set shell=/bin/zsh
-"   ~get out if it
+"   ~get out of terminal mode
 tnoremap kj <C-\><C-n>
 
 
 "   Syntax
-"   ~sets filetype of scss to be css. Helps with plugins."
-"autocmd BufNewFile,BufRead *.scss set ft=css
 "   ~omnicomplete defaults
 syntax on
 augroup omnicomplete
@@ -142,9 +127,9 @@ let g:jsx_ext_required = 0
 
 "   Tabs & Indents
 set smarttab
-"   ~num spaces for tab key
+"   ~number of spaces for tab key
 set tabstop=2
-"   ~num spaces for autoindent
+"   ~number of spaces for autoindent
 set shiftwidth=2
 "   ~use spaces for tab key
 set expandtab
@@ -158,7 +143,7 @@ set smartindent
 "   ~no text wrapping
 set nowrap
 "   ~treat underscores as keywords
-set iskeyword-=_
+"set iskeyword-=_
 
 
 "   Undo
@@ -192,12 +177,12 @@ map <leader>ra 0wewdt"da"<Esc>
 
 "   General
 "   ~show commands
-set showcmd
+set noshowcmd
 "   ~delete current buffer
 map <leader>d :bd<cr>
 "   ~exit current buffer
 map <leader>e :exit<cr>
-"   ~quit current buffer
+"   ~quit current window
 map <leader>q :q<cr>
 "   ~open file explorer
 map <leader>x :Explore<cr>
@@ -210,20 +195,13 @@ map <leader>s :w<cr>
 "   ~because lazy
 nnoremap ; :
 "   ~move normally when text wraps
-"nnoremap j gj
-"nnoremap k gk
-"   ~new line in insert mode
-imap <C-o> <esc>o
+nnoremap j gj
+nnoremap k gk
 "   ~get out of insert mode
 inoremap jk <esc>
 inoremap kj <esc>
-"   ~switchin tabs all day
-nnoremap tp :tabprevious<CR>
-nnoremap tn   :tabnext<CR>
-nnoremap <C-t>     :tabnew<CR>
-inoremap <C-S-tab> <Esc>:tabprevious<CR>i
-inoremap <C-tab>   <Esc>:tabnext<CR>i
-inoremap <C-t>     <Esc>:tabnew<CR>
+"   ~go to end of line in insert mode
+inoremap <c-e> <esc>A
 
 
 "   Selection
@@ -240,14 +218,6 @@ vnoremap <Tab> >gv
 vnoremap <S-Tab> <gv
 
 
-"   Text
-"   ~line below on enter
-nnoremap <cr> o<Esc>
-"   ~line above on shift enter
-nnoremap <S-cr> O<Esc>
-"   ~move to end of line in insert mode
-inoremap <C-e> <C-o>$
-
 "   Time
 "   ~insert times stamp
 inoremap <special> <F3> <c-r>=strftime('%c')<CR>
@@ -263,8 +233,6 @@ nnoremap <C-k> <C-W>k
 nnoremap <C-l> <C-W>l
 nnoremap <C-[> <C-W>5<
 nnoremap <C-]> <C-W>5>
-"   ~open file under cursor in new split
-nnoremap <leader>gf :vertical wincmd f<CR>
 
 
 """"""""""""""""""""""""
@@ -283,8 +251,9 @@ Plug 'BufOnly.vim'                      " Delete all except current buffer
 Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
-Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
+  "Plug 'Valloric/YouCompleteMe',          { 'do': './install.py --tern-completer' }
 Plug 'marijnh/tern_for_vim'
+Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
 
 
@@ -312,11 +281,7 @@ Plug 'haya14busa/incsearch-fuzzy.vim'
 
 
 "   Shell
-Plug 'kassio/neoterm'
-
-
-"   Snippets
-"Plug 'sirver/ultisnips'                 " Snippets boi
+"Plug 'kassio/neoterm'
 
 
 "   Syntax
@@ -331,7 +296,6 @@ Plug 'sbdchd/neoformat'                 " Neoformatter
 
 
 "   Terminal
-Plug 'vimlab/split-term.vim'            " Utilities for terminal
 Plug 'christoomey/vim-tmux-navigator'   " Use same keys for switching panes in tmux
 
 
@@ -346,12 +310,15 @@ Plug 'tpope/vim-surround'               " Surround
 
 
 "   UI
+Plug 'chrisbra/colorizer'               " Show hex colors
 Plug 'joshdick/onedark.vim'             " Atom theme
 Plug 'ryanoasis/vim-devicons'
+Plug 'terryma/vim-multiple-cursors'     " yes
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'yuttie/comfortable-motion.vim'    " Scrolling
-Plug 'terryma/vim-multiple-cursors'     " yes
-Plug 'chrisbra/colorizer'               " Show hex colors
+"Plug 'itchyny/lightline.vim'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 
 
 call plug#end()
@@ -360,56 +327,58 @@ call plug#end()
 """"""""""""""""""""""""
 "   $PLUG_SETTINGS
 "
-"
+"   Airline
+"   ~disable all extensions
+"let g:airline_extensions = []
+"let g:airline_theme='monochrome'
 "
 "   Buftabline
 "   ~custom colors
-"autocmd ColorScheme * hi BufTabLineCurrent guibg=#20242b
 augroup buftablineTheme
   autocmd!
-  autocmd ColorScheme * hi BufTabLineCurrent guibg=#282c34 guifg=#8994ab
+  autocmd ColorScheme * hi BufTabLineCurrent guibg=#282c34 guifg=#6494ed
   autocmd ColorScheme * hi BufTabLineActive guibg=#282c34 guifg=#636d83
   autocmd ColorScheme * hi BufTabLineHidden guibg=#282c34 guifg=#636d83
   autocmd ColorScheme * hi BufTabLineFill guibg=#282c34 guifg=#636d83
 augroup END
 "   ~show modified flag
 let g:buftabline_indicators = 1
-"    ~go to buffers by number
-"nmap <D-1> <Plug>BufTabLine.Go(1)
-"nmap <D-2> <Plug>BufTabLine.Go(2)
-"nmap <D-3> <Plug>BufTabLine.Go(3)
-"nmap <D-4> <Plug>BufTabLine.Go(4)
-"nmap <D-5> <Plug>BufTabLine.Go(5)
-"nmap <D-6> <Plug>BufTabLine.Go(6)
-"nmap <D-7> <Plug>BufTabLine.Go(7)
-"nmap <D-8> <Plug>BufTabLine.Go(8)
-"nmap <D-9> <Plug>BufTabLine.Go(9)
-"nmap <D-0> <Plug>BufTabLine.Go(10)
 
 
-" "   Comfortable Scrolling
-" "   ~no default mappings
+"   Comfortable Scrolling
+"   ~no default mappings
 let g:comfortable_motion_no_default_key_mappings = 1
 "   ~my defined mappings
 nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<cr>
 nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<cr>
 
-"   Deoplete
+
+"    Deoplete
 "   ~enable at startup
 let g:deoplete#enable_at_startup = 1
+"   ~but don't populate unless I say so
+let g:deoplete#disable_auto_complete = 1
 "   ~autocomplete remove delay
-let g:deoplete#auto_complete_delay = 20
+let g:deoplete#auto_complete_delay = 40
 "   ~hook into omnifunc
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = [
       \ 'tern#Complete',
       \ 'jspc#omni'
       \]
+
+"   ~use ctrl-space to omnifunc complete
+inoremap <C-Space> <C-x><C-o>
+inoremap <C-@> <C-Space>
+
+
 "   ~use tern.
 let g:tern_request_timeout = 1
 let g:tern_show_signature_in_pum = '0'
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+"   ~kill that preview section once I'm done typing
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 "   ~tab completion
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr><S-tab> pumvisible() ? "\<c-p>" : "\<S-tab>"
@@ -430,8 +399,6 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['scss'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
-
-
 "   ~adding the flags to NERDTree
 let g:webdevicons_enable_nerdtree = 1
 "   ~remove extra padding after icon
@@ -460,6 +427,7 @@ let g:NERDTreeSyntaxEnabledExtensions = [
       \ 'sql',
       \]
 
+
 "   Colorizer
 "   ~enable show colors
 map <leader>ct :ColorToggle<cr>
@@ -468,11 +436,7 @@ map <leader>ct :ColorToggle<cr>
 "   Easy Motion
 "   ~use default mapping
 "   ~<Leader>f{char} to move to {char}
-map  <Leader>f <Plug>(easymotion-bd-f)
-"   ~move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-"   ~move to word
-map  <Leader>w <Plug>(easymotion-bd-w)
+map <Leader>f <Plug>(easymotion-bd-f)
 
 
 "   Easy Motion + Incsearch Fuzzy Finder
@@ -488,11 +452,6 @@ endfunction
 noremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
 
-"   EMMET
-"   ~use tab to expand - but really isn't so cool...
-"imap <expr> <tab> emmet#expandAbbrIntelligent("\<tab>")
-
-
 "   FZF
 "   ~set runtime path
 set rtp+=~/.fzf
@@ -502,7 +461,7 @@ nnoremap <c-p> :FZF<cr>
 "   ~look in project files not node modules etc.
 "nnoremap <c-p> :GFiles<cr>
 "   ~search for [query] within buffers
-"nnoremap <c-> :Buffers<cr>
+nnoremap <c-b> :Buffers<cr>
 "   ~search for [query] within current buffer lines
 nnoremap <c-f> :BLines<cr>
 "   ~mapping selecting mappings
@@ -514,25 +473,19 @@ imap <c-f><c-k> <plug>(fzf-complete-word)
 imap <c-f><c-f> <plug>(fzf-complete-path)
 imap <c-f><c-j> <plug>(fzf-complete-file-ag)
 imap <c-f><c-l> <plug>(fzf-complete-line)
-"   ~this is the default extra key bindings
-"   let g:fzf_action = {
-"     \ 'ctrl-t': 'tab split',
-"     \ 'ctrl-x': 'split',
-"     \ 'ctrl-v': 'vsplit' }
-"
 
 
 "   Git Gutter
 "   ~disable by default
-let g:gitgutter_enabled = 1
+let g:gitgutter_enabled = 0
 "   ~always show the column
 let g:gitgutter_sign_column_always = 1
 "   ~set my own bg color
 "let g:gitgutter_override_sign_column_highlight = 0
-let g:gitgutter_sign_added = '│'
-let g:gitgutter_sign_modified = '│'
-let g:gitgutter_sign_removed = '│'
-let g:gitgutter_sign_modified_removed = '│'
+let g:gitgutter_sign_added = '|'
+let g:gitgutter_sign_modified = '|'
+let g:gitgutter_sign_removed = '|'
+let g:gitgutter_sign_modified_removed = '|'
 
 
 "   Markdown
@@ -541,6 +494,12 @@ let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Go
 "   ~don't close on switch to different buffer
 let g:mkdp_auto_close = 0
 
+
+"    Lightline
+""   ~custom options
+"let g:lightline = {
+"      \ 'colorscheme': 'onedark',
+"      \ }
 
 "   Multiple cursors
 "   ~enable custom mapping
@@ -553,11 +512,10 @@ let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<C-c>'
 nnoremap <C-c> :call multiple_cursors#quit()<CR>
 
+
 "   Nerdtree
-"   ~show line numbers
-let NERDTreeShowLineNumbers = 1
 "   ~show hidden files by default
-let NERDTreeShowHidden=1
+let NERDTreeShowHidden = 1
 "   ~expandable icon - glyphs from SauceCodePro_Nerd_Font
 let g:NERDTreeDirArrowExpandable = ''
 "   ~collapsible icon - glyphs from SauceCodePro_Nerd_Font
@@ -565,13 +523,13 @@ let g:NERDTreeDirArrowCollapsible = ''
 "   ~change working directory
 let g:NERDTreeChDirMode = 2
 "   ~force minimal UI
-let NERDTreeMinimalUI=1
-"   ~hide line numbers
-let NERDTreeShowLineNumbers=0
+let g:NERDTreeMinimalUI = 1
+"   ~show line numbers
+let g:NERDTreeShowLineNumbers = 0
 "   ~hide cursorline
-let NERDTreeHighlightCursorline=0
+let g:NERDTreeHighlightCursorline = 0
 "   ~don't collapse only one child
-let NERDTreeCascadeSingleChildDir=0
+let g:NERDTreeCascadeSingleChildDir = 0
 "   ~toggle nerd tree
 map <leader>nt :NERDTreeToggle<cr>
 "   ~nerdtree custom colors
@@ -598,53 +556,42 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_jsx_enabled_makers = ['eslint']
 
 
-"   Ultisnips
-"   ~default snippet settings
-"let g:UltiSnipsExpandTrigger = "<tab>"
-"let g:UltiSnipsListSnippets = "<c-tab>"
-
-
-""""""""""""""""""""""""
-"   $TERMINAL
-tnoremap <A-h> <C-\><C-n><C-w>h
-tnoremap <A-j> <C-\><C-n><C-w>j
-tnoremap <A-k> <C-\><C-n><C-w>k
-tnoremap <A-l> <C-\><C-n><C-w>l
-nnoremap <A-h> <C-w>h
-nnoremap <A-j> <C-w>j
-nnoremap <A-k> <C-w>k
-nnoremap <A-l> <C-w>l
+  "      YouCompleteMe
+  "  "   ~triggers for html and css
+  "  let g:ycm_semantic_triggers = {
+  "        \   'html': ['<', '"', '</', ' '],
+  "        \   'css': [ 're!^\s{2}', 're!:\s+' ],
+  "        \ }
+  "  set pumheight=24
+  "  set completeopt-=preview
 
 
 """"""""""""""""""""""""
 "   $UI
-
-
-"   Buffers
-"   ~only use cursorline for current window
-" augroup windowFocus
-"   autocmd!
-"   autocmd WinEnter,FocusGained * setlocal cursorline
-"   autocmd WinLeave,FocusLost   * setlocal nocursorline
-" augroup END
+"
+"   ~title
+set title
+"   ~allow switching through modified buffers
+set hidden
+"   ~set friendlier mappings
 nnoremap ) :bnext<cr>
 nnoremap ( :bprevious<cr>
-nnoremap <leader>bd :bdelete<cr>
-
-"   Clipboard
-"   ~use system clipboard
-set clipboard=unnamed
+nnoremap <leader>w :bdelete<cr>
 
 
 "   Comments
 "   ~italics for comments
-hi Comment gui=italic cterm=italic
-hi htmlArg gui=italic cterm=italic
+augroup italicsOn
+  autocmd!
+  autocmd ColorScheme * hi Comment gui=italic cterm=italic
+  autocmd ColorScheme * hi htmlArg gui=italic cterm=italic
+  autocmd ColorScheme * hi xmlAttrib gui=italic cterm=italic
+augroup END
 
 
 "   Cursor
 "   ~highlight cursor line
-set cursorline
+"   set cursorline
 "   ~keep X lines away from top and bottom
 set scrolloff=5
 "   ~keep X lines away from left and right
@@ -657,12 +604,11 @@ set virtualedit=all
 
 
 "   Font
-"   ~use source code pro
-"set guifont=Source_Code_Pro:h15
-"set guifont=SauceCodePro_Nerd_Font:h15
-set guifont=OperatorMonoSSm_Nerd_Font:h15
+"   ~yea buddy
+"set guifont=OperatorMonoSSm_Nerd_Font:h15
 "   ~set lineheight
 set linespace=5
+
 
 "   Gutter
 "   ~darken gutter color
@@ -672,24 +618,23 @@ set linespace=5
 "  autocmd ColorScheme * hi SignColumn guibg=darkgrey
 "augroup END
 "   ~set number width
-"set numberwidth=6
+set numberwidth=6
+
 
 "   MatchParen
-"augroup matchparen_theme
-  "autocmd!
-  "autocmd ColorScheme * hi MatchParen guibg=#abb2bf
-"augroup END
+"   augroup matchparen_theme
+"     autocmd!
+"     autocmd ColorScheme * hi MatchParen guibg=NONE guifg=NONE gui=underline
+"   augroup END
 
 
 "   Numbers
-"   ~show relative line numbers and number on the cursorline
-"set rnu nu
 "   ~show relative line numbers
 set rnu
 "   ~change color of current line number
 augroup linetheme
   autocmd!
-  autocmd ColorScheme * hi CursorLineNr guifg=#6494ed ctermfg=39
+  autocmd ColorScheme * hi LineNr guifg=#3a404c gui=NONE
 augroup END
 
 
@@ -772,7 +717,7 @@ endfunction
 
 function! FileChanged()
   if &modified
-    return ''
+    return '  '
   else
     return ''
 endfunction
@@ -781,27 +726,22 @@ endfunction
 autocmd ColorScheme * hi User1 guibg=#282C34 guifg=#e5c07b
 "   ~color for current buffer mode icon
 "autocmd ColorScheme * hi User2 guibg=#282C34 guifg=#61afef
-
-"   ~toggle on buffer enter
-
 set laststatus=2
 set statusline=
 "   ~current mode
 "set statusline+=%{ChangeStatuslineColor()}
-"set statusline+=%2*\ \ \ \ %{tolower(g:currentmode[mode()])}  " OFF
-set statusline+=%0*\ \ \ \ %{toupper(g:currentmode[mode()])}  " OFF
-set statusline+=%*
+"set statusline+=%0*\ \ \ \ %{toupper(g:currentmode[mode()])}  " OFF
+"set statusline+=%*
 "   ~buffer number
 "set statusline+=%8*\ [%n]
 "   ~buffer branch
 "   ~buffer filepath
-set statusline+=%0*\ %<%f\ %{ReadOnly()}
-set statusline+=%0*\%l:\%c\                       " linenumber : column
 "   ~buffer is modified
 "set statusline+=%M
-set statusline+=%1*
-set statusline+=%{FileChanged()}
+set statusline+=%1*\ \ \ %{FileChanged()}
 set statusline+=%*
+set statusline+=%0*%f\ %{ReadOnly()}
+"set statusline+=%0*\%l:\%c\                       " linenumber : column
 "   ~buffer
 "set statusline+=%8*\ %w\                                    " File+path
 "   ~buffer has syntax errors
@@ -813,9 +753,8 @@ set statusline+=%0*\ %=                                      " Space
 "set statusline+=%0*\%{(&fenc!=''?&fenc:&enc)}\(%{&ff})\     " Encoding & Fileformat
 set statusline+=%0*\%{toupper(&fenc!=''?&fenc:&enc)}\        " Encoding & Fileformat OFF
 "set statusline+=%0*\ %y\                                    " FileType
-set statusline+=%0*\%{GitInfo()}
-set statusline+=%0*\%-3(%{FileSize()}%)                     " File size
-"set statusline+=%0*\%3p%%\ \ %l:\%c\                       " Rownumber/total (%)
+set statusline+=%0*\ %-3(%{FileSize()}%)                     " File size
+set statusline+=%0*\ %l:\%c\ %3p%%\ \ \                        " Rownumber/total (%)
 "   ~to here
 "   ~highlight statusline bg color
 "   ~alternate color for bg is #181A1F
@@ -846,20 +785,8 @@ augroup END
 let g:onedark_terminal_italics = 1
 "   ~cursor change shape per modes
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE = 1
+"   ~use this colorscheme
 colorscheme onedark
-
-
-""   Tabline
-""   ~colors on tabline
-"augroup tabline_theme
-"  autocmd!
-"  "   ~inactive tabs
-"  autocmd ColorScheme * hi TabLine guibg=#181A1F
-"  "   ~active tabs
-"  "autocmd ColorScheme * hi TabLineSel ctermbg=Yellow
-"  "   ~tabline background color
-"  autocmd ColorScheme * hi TabLineFill guibg=#181A1F
-"augroup END
 
 
 "   Toolbars
@@ -874,10 +801,9 @@ set guioptions-=L
 
 
 "   Windows
-"   ~nice border looking line between buffers
-"set fillchars=vert:│
+"   ~no borders between panes
 set fillchars=""
-"   ~color the tildes : )
+"   ~color the tildes so it looks like none
 hi EndOfBuffer guifg=#282C34 ctermfg=235
 
 
@@ -968,6 +894,9 @@ hi EndOfBuffer guifg=#282C34 ctermfg=235
 
 "   On key repeating
 "   defaults write NSGlobalDomain KeyRepeat -int 0
+
+"   On finder titlebar path
+"   run command: defaults write com.apple.finder _FXShowPosixPathInTitle -bool true; killall Finder
 
 "   On ternjs
 "   Use this in your home directory. This is referencing this base

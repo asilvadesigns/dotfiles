@@ -57,12 +57,12 @@ font:
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
   offset:
     x: 0.0
-    y: 2.0
+    y: 5.0
 
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  use_thin_strokes: true
+  use_thin_strokes: false
 
 # Should display the render timer
 render_timer: false
@@ -80,12 +80,14 @@ colors:
 
   # Colors the cursor will use if `custom_cursor_colors` is true
   # text: '0x000000'
-  # cursor: '0xabb2bf'
+  # cursor: '0xabb2bf' white
+  # cursor: '0x3f5e9d' blueish
   cursor:
     text: '0xabb2bf'
-    cursor: '0x3f5e9d'
+    cursor: '0x3d7af5'
 
   # Normal colors
+  # black:   '0x282c34'
   normal:
     black:   '0x282c34'
     red:     '0xbe5046'
@@ -98,7 +100,7 @@ colors:
 
   # Bright colors
   bright:
-    black:   '0x282c34'
+    black:   '0x636d83'
     red:     '0xe06c75'
     green:   '0x98c379'
     yellow:  '0xd91a66'
@@ -208,6 +210,7 @@ key_bindings:
   - { key: Insert,                  chars: "\x1b[2~"                     }
   - { key: Delete,                  chars: "\x1b[3~",  mode: AppKeypad   }
   - { key: Delete,                  chars: "\x1b[P",   mode: ~AppKeypad  }
+  - { key: Space,    mods: Control, chars: "\x00"                        }
 
 # Mouse bindings
 #
@@ -242,7 +245,8 @@ hide_cursor_when_typing: false
 # Entries in shell.args are passed unmodified as arguments to the shell.
 #
 shell:
-  #program: /bin/bash
   program: /bin/zsh
+  #program: /bin/bash
+  #program: /usr/local/bin/fish
   args:
     - --login

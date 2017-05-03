@@ -1,8 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 #
 #
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/aas/.vimpkg/bin:/Users/aas/depot_tools:/usr/local/bin/npm:/usr/local/go/bin:/Users/aas/go/bin:/usr/.cargo/bin:/Users/aas/.cargo/bin:/Users/aas/Scripts
+export PATH=~/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/aas/.vimpkg/bin:/Users/aas/depot_tools:/usr/local/bin/npm:/usr/local/go/bin:/Users/aas/go/bin:/usr/.cargo/bin:/Users/aas/.cargo/bin:/Users/aas/Scripts:/Users/aas/Desktop/GoogleTest
+export PATH=/Applications/MAMP/bin/php/php7.0.15/bin:$PATH
 
 # export
 #export TERM=tmux-256color-italic
@@ -23,7 +23,6 @@ ZSH_THEME="powerlevel9k/powerlevel9k"
 #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 #POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=""
 POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX="  "
-
 POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX="    "
 # ~keep the powerbar up top
 POWERLEVEL9K_PROMPT_ON_NEWLINE=true
@@ -37,7 +36,7 @@ POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=""
 POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR=""
 POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=""
 # ~directory length
-POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+#POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
 # ~directory colors
 POWERLEVEL9K_DIR_HOME_BACKGROUND="black"
 POWERLEVEL9K_DIR_HOME_FOREGROUND="015"
@@ -109,7 +108,6 @@ POWERLEVEL9K_VCS_UNTRACKED_ICON=''
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-
 source $ZSH/oh-my-zsh.sh
 
 
@@ -155,6 +153,7 @@ alias goexperiments='cd ~/Desktop/Experiments/'
 alias gobunnies='cd ~/Desktop/Experiments/FightTheBunnies'
 alias gogithub='cd ~/Desktop/Github'
 alias gosites='cd ~/Sites'
+alias rm='trash'
 
 #   VIM
 alias vim='/usr/local/Cellar/vim/8.0.0160/bin/vim'
