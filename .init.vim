@@ -251,7 +251,6 @@ Plug 'BufOnly.vim'                      " Delete all except current buffer
 Plug 'jiangmiao/auto-pairs'             " Autopairs
 Plug 'mattn/emmet-vim'                	" Emmet
 Plug 'othree/jspc.vim'                  " JS Parameter Complete
-  "Plug 'Valloric/YouCompleteMe',          { 'do': './install.py --tern-completer' }
 Plug 'marijnh/tern_for_vim'
 Plug 'Shougo/deoplete.nvim',            { 'do': ':UpdateRemotePlugins' }
 Plug 'carlitux/deoplete-ternjs',        { 'do': 'npm install -g tern' }
@@ -278,10 +277,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
-
-
-"   Shell
-"Plug 'kassio/neoterm'
 
 
 "   Syntax
@@ -316,9 +311,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'terryma/vim-multiple-cursors'     " yes
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'yuttie/comfortable-motion.vim'    " Scrolling
-"Plug 'itchyny/lightline.vim'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
 
 
 call plug#end()
@@ -459,7 +451,7 @@ set rtp+=~/.fzf
 "   ~set default usage.
 nnoremap <c-p> :FZF<cr>
 "   ~look in project files not node modules etc.
-"nnoremap <c-p> :GFiles<cr>
+nnoremap <c-g> :GFiles<cr>
 "   ~search for [query] within buffers
 nnoremap <c-b> :Buffers<cr>
 "   ~search for [query] within current buffer lines
@@ -591,7 +583,7 @@ augroup END
 
 "   Cursor
 "   ~highlight cursor line
-"   set cursorline
+set cursorline
 "   ~keep X lines away from top and bottom
 set scrolloff=5
 "   ~keep X lines away from left and right
@@ -802,9 +794,11 @@ set guioptions-=L
 
 "   Windows
 "   ~no borders between panes
-set fillchars=""
+set fillchars="vert:|"
+autocmd ColorScheme * hi VertSplit guifg=#181A1F cterm=NONE ctermfg=235
 "   ~color the tildes so it looks like none
 hi EndOfBuffer guifg=#282C34 ctermfg=235
+"#181A1F
 
 
 """"""""""""""""""""""""
