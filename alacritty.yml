@@ -1,4 +1,4 @@
-# Configuration for Alacritty, the GPU enhanced terminal emulator
+#6494ed Configuration for Alacritty, the GPU enhanced terminal emulator
 
 
 # Any items in the `env` entry below will be added as
@@ -24,8 +24,8 @@ dimensions:
 # Units are physical pixels; this is not DPI aware.
 # (change requires restart)
 padding:
-  x: 12
-  y: 12
+  x: 0
+  y: 0
 
 # The FreeType rasterizer needs to know the device DPI for best results
 # (changes require restart)
@@ -66,19 +66,19 @@ font:
   # as modifying the linespacing, and offset.x as modifying the letter spacing.
   offset:
     x: 0.0
-    y: 5.0
+    y: 4.0
 
   # Glyph offset determines the locations of the glyphs within their cells with
   # the default being at the bottom. Increase the x offset to move the glyph to
   # the right, increase the y offset to move the glyph upward.
   glyph_offset:
     x: 0.0
-    y: 2.5
+    y: 2.0
 
   # OS X only: use thin stroke font rendering. Thin strokes are suitable
   # for retina displays, but for non-retina you probably want this set to
   # false.
-  use_thin_strokes: false
+  use_thin_strokes: true
 
 # Should display the render timer
 render_timer: false
@@ -95,9 +95,10 @@ colors:
     foreground: '0x636d83'
 
   # Colors the cursor will use if `custom_cursor_colors` is true
+  #cursor: '#3d7af5'
   cursor:
     text: '0xabb2bf'
-    cursor: '0x3d7af5'
+    cursor: '0x6494ed'
 
   # Normal colors
   normal:
@@ -185,6 +186,8 @@ key_bindings:
   - { key: Q,        mods: Command, action: Quit                         }
   - { key: W,        mods: Command, action: Quit                         }
   - { key: Insert,   mods: Shift,   action: PasteSelection               }
+  #- { key: Equals,   mods: Command, action: IncreaseFontSize             }
+  #- { key: Subtract, mods: Command, action: DecreaseFontSize             }
   - { key: Home,                    chars: "\x1bOH",   mode: AppCursor   }
   - { key: Home,                    chars: "\x1b[1~",  mode: ~AppCursor  }
   - { key: End,                     chars: "\x1bOF",   mode: AppCursor   }
@@ -255,7 +258,7 @@ mouse:
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
 
-hide_cursor_when_typing: false
+hide_cursor_when_typing: true
 
 # Shell
 #
