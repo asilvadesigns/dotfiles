@@ -5,6 +5,7 @@
 "     Commands
 "         Files
 "         Syntax
+"         Vimrc
 "     Functions
 "         Syntax
 "     General
@@ -28,18 +29,22 @@
 "         Load
 "         End
 "     Settings
-"         Airline
 "         Ale
 "         Colorizer
 "         Comfortable Motion
 "         Easy Motion
 "         FZF
+"         IndentLine
+"         Markdown
+"         Multiple Cursors
+"         Nerd Tree
 "         Nvim Completion Manager
 "     UI
 "         ColorScheme
 "         Devicons
-"         Theme
+"         Statusline
 "         Syntax
+"         Theme
 
 
 
@@ -97,6 +102,8 @@ set hidden
 
 
 "   General | Editing
+"   ~don't show last command
+set noshowcmd
 "   ~load plugins for file types
 filetype plugin on
 "   ~if file changes: reload
@@ -120,6 +127,7 @@ nnoremap ; :
 
 
 "   General | Search
+"
 "   ~case intelligent search
 set ignorecase
 set smartcase
@@ -263,26 +271,24 @@ Plug 'tpope/vim-surround'
 "   ~files
 Plug 'iamcco/markdown-preview.vim'
 "   ~linting
+Plug 'sbdchd/neoformat'
 Plug 'w0rp/ale'
 "   ~navigation
 Plug 'scrooloose/nerdtree'
 Plug 'yuttie/comfortable-motion.vim'
 "   ~searching
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install' }
-Plug 'junegunn/fzf.vim'
 Plug 'easymotion/vim-easymotion'
-Plug 'haya14busa/incsearch.vim'
 Plug 'haya14busa/incsearch-easymotion.vim'
 Plug 'haya14busa/incsearch-fuzzy.vim'
+Plug 'haya14busa/incsearch.vim'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': 'yes \| ./install' }
+Plug 'junegunn/fzf.vim'
 "   ~theme
-Plug 'ayu-theme/ayu-vim'
+Plug 'ap/vim-buftabline'
 Plug 'joshdick/onedark.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'altercation/vim-colors-solarized'
-Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'Yggdroot/indentLine'
 "   ~tmux
 Plug 'christoomey/vim-tmux-navigator'
 "   ~whitespace
@@ -299,22 +305,6 @@ call plug#end()
 
 "--------------------------------------"
 "   Settings
-
-
-"   Settings | Airline
-"   ~set default theme
-let g:airline_theme='custom_dark'
-"   ~use tabline
-let g:airline_section_a = ''
-let g:airline_extensions = ['tabline']
-"   ~only show filename in tabline
-let g:airline#extensions#tabline#fnamemod = ':t'
-"   ~don't have any separators between tabs
-let g:airline#extensions#tabline#left_sep = ''
-let g:airline#extensions#tabline#left_alt_sep = ''
-let g:airline#extensions#tabline#right_sep = ''
-let g:airline#extensions#tabline#right_alt_sep = ''
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 
 
 "   Settings | Ale
@@ -390,6 +380,15 @@ imap <c-f><c-j> <plug>(fzf-complete-file-ag)
 imap <c-f><c-l> <plug>(fzf-complete-line)
 
 
+"   Settings | IndentLine
+"   ~set disable by default
+let g:indentLine_enabled=0
+"   ~set default character
+let g:indentLine_char = ''
+"   ~set default character color
+let g:indentLine_color_gui = '#353a46'
+
+
 "   Settings | Markdown
 "   ~set path to chrome
 let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
@@ -451,8 +450,13 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
     set termguicolors
   endif
 "endif
+"   ~enable cursorline
+set cursorline
+"   ~enable terminal italics
 let g:onedark_terminal_italics = 1
+"   ~enable terminal 256 colors
 let g:onedark_termcolors=256
+"   ~set colorscheme to onedark ... so sexy
 colorscheme onedark
 
 
@@ -497,14 +501,30 @@ let g:NERDTreeSyntaxEnabledExtensions = [
       \]
 
 
+"   UI | Statusline
+set numberwidth=6
+set statusline=
+set statusline+=\ %4l•%-3c
+set statusline+=\ %3p%%
+set statusline+=\ \ \ %.60F\ %{WebDevIconsGetFileTypeSymbol()}
+set statusline+=%#ErrorMsg#
+set statusline+=\ %{getbufvar(bufnr('%'),'&mod')?'':''}
+set statusline+=%*
+set statusline+=%=
+set statusline+=\ %y
+set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+set statusline+=\ %{&fileformat}
+set statusline+=\ \ 
+
+
 "   UI | Syntax
 "   ~no syntax highlight past 80 columns
-set synmaxcol=80
+set synmaxcol=200
 "   ~change bg color after 80 columns
-execute "set colorcolumn=" . join(range(81,335), ',')
+"execute "set colorcolumn=" . join(range(81,335), ',')
 
 
-"      UI | Theme
+"   UI | Theme
 "   ~no borders between panes
 set fillchars=""
 "   ~color the tildes so it looks like none
@@ -521,3 +541,16 @@ hi NERDTreeOpenable guifg=#abb2bf gui=NONE
 hi NERDTreeClosable guifg=#abb2bf gui=NONE
 "   ~current working directory
 hi NERDTreeCWD guifg=#636d83 gui=NONE
+"   ~FZF
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 guifg=#61afef guibg=#20242b
+  highlight fzf2 guifg=#61afef guibg=#20242b
+  highlight fzf3 guifg=#61afef guibg=#20242b
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+"   ~use Italics on comments and html/xml attributes
+hi Comment gui=italic cterm=italic
+hi htmlArg gui=italic cterm=italic
+hi xmlAttrib gui=italic cterm=italic
