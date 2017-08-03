@@ -57,7 +57,6 @@ function! buftabline#render()
 	let bufnums = buftabline#user_buffers()
 	let centerbuf = s:centerbuf " prevent tabline jumping around when non-user buffer current (e.g. help)
 
-  " %{WebDevIconsGetFileTypeSymbol()}
 	" pick up data on all the buffers
 	let tabs = []
 	let path_tabs = []
@@ -71,17 +70,19 @@ function! buftabline#render()
 		if currentbuf == bufnum | let [centerbuf, s:centerbuf] = [bufnum, bufnum] | endif
 		let bufpath = bufname(bufnum)
 		if strlen(bufpath)
-      let tab.path = fnamemodify(bufpath, ':p:~:.')
+			let tab.path = fnamemodify(bufpath, ':p:~:.')
 			let tab.sep = strridx(tab.path, s:dirsep, strlen(tab.path) - 2) " keep trailing dirsep
-			let tab.label = tab.path[tab.sep + 1:] . ' ' . WebDevIconsGetFileTypeSymbol(tab.path)
-			let pre = ( show_mod && getbufvar(bufnum, '&mod') ? ' •' : '  ' ) . screen_num
+			"let tab.label = tab.path[tab.sep + 1:]
+			let tab.label = tab.path[tab.sep + 1:] . ' ' . WebDevIconsGetFileTypeSymbol(tab.path) . ( show_mod && getbufvar(bufnum, '&mod') ? ' ' : '  ' )
+			"let pre = ( show_mod && getbufvar(bufnum, '&mod') ? '+' : ' ' ) . screen_num
+      let pre = screen_num
 			let tab.pre = strlen(pre) ? pre . ' ' : ''
 			let tabs_per_tail[tab.label] = get(tabs_per_tail, tab.label, 0) + 1
 			let path_tabs += [tab]
 		elseif -1 < index(['nofile','acwrite'], getbufvar(bufnum, '&buftype')) " scratch buffer
 			let tab.label = ( show_mod ? '!' . screen_num : screen_num ? screen_num . ' !' : '!' )
 		else " unnamed file
-      let tab.label = ( show_mod && getbufvar(bufnum, '&mod') ? ' •' : '  ' )
+			let tab.label = ( show_mod && getbufvar(bufnum, '&mod') ? ' ' : '  ' )
 			\             . ( screen_num ? screen_num : '*' )
 		endif
 		let tabs += [tab]
@@ -148,8 +149,7 @@ function! buftabline#render()
 	if len(tabs) | let tabs[0].label = substitute(tabs[0].label, lpad, ' ', '') | endif
 
 	let swallowclicks = '%'.(1 + tabpagenr('$')).'X'
-  "   %{WebDevIconsGetFileTypeSymbol()}
-	return swallowclicks . join(map(tabs,'printf("%%#BufTabLine%s#%s",v:val.hilite,strtrans(v:val.label))'),' ') . '%#BufTabLineFill#'
+	return swallowclicks . join(map(tabs,'printf("%%#BufTabLine%s#%s",v:val.hilite,strtrans(v:val.label))'),'') . '%#BufTabLineFill#'
 endfunction
 
 function! buftabline#update(deletion)
