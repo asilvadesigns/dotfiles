@@ -57,14 +57,32 @@ function! buftabline#render()
 	let bufnums = buftabline#user_buffers()
 	let centerbuf = s:centerbuf " prevent tabline jumping around when non-user buffer current (e.g. help)
 
+	" start - custom numbers
+  let s:number_map = {
+        \ '0': '⁰',
+        \ '1': '¹',
+        \ '2': '²',
+        \ '3': '³',
+        \ '4': '⁴',
+        \ '5': '⁵',
+        \ '6': '⁶',
+        \ '7': '⁷',
+        \ '8': '⁸',
+        \ '9': '⁹'
+        \ }
+  " end   - custom numbers
+
 	" pick up data on all the buffers
 	let tabs = []
 	let path_tabs = []
 	let tabs_per_tail = {}
 	let currentbuf = winbufnr(0)
 	let screen_num = 0
+	let l:index = 1
 	for bufnum in bufnums
-		let screen_num = show_num ? bufnum : show_ord ? screen_num + 1 : ''
+		"let screen_num = show_num ? bufnum : show_ord ? screen_num + 1 : ''
+		"let screen_num = show_num ? bufnum : show_ord ? get(s:number_map, screen_num + 1, '') : ''
+		let screen_num = show_num ? bufnum : show_ord ? get(s:number_map, l:index, '') : ''
 		let tab = { 'num': bufnum }
 		let tab.hilite = currentbuf == bufnum ? 'Current' : bufwinnr(bufnum) > 0 ? 'Active' : 'Hidden'
 		if currentbuf == bufnum | let [centerbuf, s:centerbuf] = [bufnum, bufnum] | endif
@@ -72,9 +90,9 @@ function! buftabline#render()
 		if strlen(bufpath)
 			let tab.path = fnamemodify(bufpath, ':p:~:.')
 			let tab.sep = strridx(tab.path, s:dirsep, strlen(tab.path) - 2) " keep trailing dirsep
-			"let tab.label = tab.path[tab.sep + 1:]
-			let tab.label = tab.path[tab.sep + 1:] . ' ' . WebDevIconsGetFileTypeSymbol(tab.path) . ( show_mod && getbufvar(bufnum, '&mod') ? ' ' : '  ' )
-			"let pre = ( show_mod && getbufvar(bufnum, '&mod') ? '+' : ' ' ) . screen_num
+			let tab.label = WebDevIconsGetFileTypeSymbol(tab.path) . '' . tab.path[tab.sep + 1:] . ' ' . ( show_mod && getbufvar(bufnum, '&mod') ? '' : ' ' )
+			"let pre = ( show_mod && getbufvar(bufnum, '&mod') ? '+' : '' ) . screen_num
+			"let pre = screen_num . ( show_mod && getbufvar(bufnum, '&mod') ? '' : ' ' )
       let pre = screen_num
 			let tab.pre = strlen(pre) ? pre . ' ' : ''
 			let tabs_per_tail[tab.label] = get(tabs_per_tail, tab.label, 0) + 1
@@ -82,9 +100,10 @@ function! buftabline#render()
 		elseif -1 < index(['nofile','acwrite'], getbufvar(bufnum, '&buftype')) " scratch buffer
 			let tab.label = ( show_mod ? '!' . screen_num : screen_num ? screen_num . ' !' : '!' )
 		else " unnamed file
-			let tab.label = ( show_mod && getbufvar(bufnum, '&mod') ? ' ' : '  ' )
+			let tab.label = ( show_mod && getbufvar(bufnum, '&mod') ? '+' : '' )
 			\             . ( screen_num ? screen_num : '*' )
 		endif
+		let l:index = l:index + 1
 		let tabs += [tab]
 	endfor
 
