@@ -117,9 +117,18 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('junegunn/fzf', { 'build': './install', 'rtp': '' })
   call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
   call dein#add('rking/ag.vim')
+  call dein#add('brooth/far.vim')
   "   ~syntax
+  call dein#add('StanAngeloff/php.vim')
+  call dein#add('cakebaker/scss-syntax.vim')
+  call dein#add('hail2u/vim-css3-syntax')
+  call dein#add('mitsuhiko/vim-python-combined')
+  call dein#add('mxw/vim-jsx')
+  call dein#add('othree/html5.vim')
+  call dein#add('pangloss/vim-javascript')
+  call dein#add('plasticboy/vim-markdown')
   call dein#add('rust-lang/rust.vim')
-  call dein#add('sheerun/vim-polyglot')
+  call dein#add('stephpy/vim-yaml')
   "   ~theme
   call dein#add('asilvadesigns/atom-theif')
   call dein#add('mhartington/oceanic-next')
@@ -166,10 +175,11 @@ command! Newscss execute 'vnew' | execute 'Setscss'
 command! Newjs execute 'vnew' | execute 'Setjs'
 "   ~set vim current directory to current buffer directory
 command! GoBufferDir execute ':lcd %:p:h'
-command! GoHome execute ':cd ~'
-command! GoSites execute ':cd ~/Sites'
 command! GoDesktop execute ':cd ~/Desktop'
 command! GoGithub execute ':cd ~/Desktop/Github'
+command! GoHome execute ':cd ~'
+command! GoProjects execute ':cd ~/Desktop/Projects'
+command! GoSites execute ':cd ~/Sites'
 
 
 "   Commands | Text
@@ -300,7 +310,7 @@ set smartcase
 "   ~no highlight search result
 set nohlsearch
 "   ~show preview window when substituting string
-set inccommand=split
+"set inccommand=split
 
 
 "   General | Tabs & Indents
@@ -656,9 +666,8 @@ call vimfiler#custom#profile('default', 'context', {
 let g:vimfiler_ignore_pattern = []
 "   ~define custom hotkeys
 nnoremap <leader>f :VimFiler<cr>
-"   ~disable default key mappings
-let g:vimfiler_no_default_key_mappings = 0
-nnoremap <silent> <C-l> <C-W>l
+"   ~don't use ctrl-l in vimfiler
+autocmd FileType vimfiler nunmap <buffer> <C-l>
 
 
 
@@ -759,9 +768,9 @@ set statusline=
 "set statusline+=\ \ \ %.30F\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ •\ %t\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ \ \ %t
-set statusline+=\ \ \ %t
-set statusline+=\ •\ %-4l
-set statusline+=:\%3p%%
+set statusline+=\ \ \ %.40F
+set statusline+=\ •\ %l
+set statusline+=:\%p%%
 "set statusline+=:\%-4c
 "set statusline+=%#ErrorMsg#
 set statusline+=\ %{getbufvar(bufnr('%'),'&mod')?'':''}
