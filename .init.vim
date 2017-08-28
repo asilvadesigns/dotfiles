@@ -9,6 +9,7 @@
 "     Commands
 "         Files
 "         Syntax
+"         Text
 "         Vimrc
 "     Functions
 "         Syntax
@@ -49,6 +50,7 @@
 "         Neoformat
 "         Nvim Completion Manager
 "         OpenBrowser
+"         Python Syntax
 "         Tern
 "         VimFiler
 "     UI
@@ -81,13 +83,13 @@ if dein#load_state('/Users/aas/.cache/dein')
   "   ~completion
   call dein#add('jiangmiao/auto-pairs')
   call dein#add('mattn/emmet-vim')
-  call dein#add('roxma/nvim-completion-manager')
-  call dein#add('roxma/nvim-cm-tern', {'build': 'npm install'})
+  "call dein#add('roxma/nvim-completion-manager')
+  "call dein#add('roxma/nvim-cm-tern', {'build': 'npm install'})
   "
-  "call dein#add('Shougo/deoplete.nvim')
-  "call dein#add('zchee/deoplete-jedi')
-  "call dein#add('ternjs/tern_for_vim', { 'build': 'npm install' })
-  "call dein#add('carlitux/deoplete-ternjs')
+  call dein#add('Shougo/deoplete.nvim')
+  call dein#add('zchee/deoplete-jedi')
+  call dein#add('ternjs/tern_for_vim', { 'build': 'npm install' })
+  call dein#add('carlitux/deoplete-ternjs')
   "
   "   ~comments
   call dein#add('scrooloose/nerdcommenter')
@@ -120,9 +122,9 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('brooth/far.vim')
   "   ~syntax
   call dein#add('StanAngeloff/php.vim')
-  call dein#add('cakebaker/scss-syntax.vim')
-  call dein#add('hail2u/vim-css3-syntax')
-  call dein#add('mitsuhiko/vim-python-combined')
+  "call dein#add('cakebaker/scss-syntax.vim')
+  "call dein#add('hail2u/vim-css3-syntax')
+  call dein#add('kh3phr3n/python-syntax')
   call dein#add('mxw/vim-jsx')
   call dein#add('othree/html5.vim')
   call dein#add('pangloss/vim-javascript')
@@ -187,6 +189,8 @@ command! GoSites execute ':cd ~/Sites'
 command! DeleteAllEmptyLines execute 'g/^$/d'
 "   ~make selection titlecase
 command! MakeAllTitleCase execute ':%s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g'
+"   ~soft wrap text toggle
+command! WrapToggle execute ':set wrap! linebreak!'
 
 
 
@@ -282,7 +286,7 @@ augroup END
 
 "   General | Modes
 "   ~don't use nomatchparen
-let loaded_matchparen = 0
+let loaded_matchparen = 1
 
 "   General | Modes
 "   ~get out of insert mode
@@ -358,8 +362,8 @@ map <leader>d :bd!<cr>
 map <leader>e :exit<cr>
 "   ~quit current window
 map <leader>q :q<cr>
-"   ~open file explorer
-map <leader>x <C-w>c<cr>
+"   ~close current window
+ map <leader>x <C-w>c<cr>
 "   ~reload current buffer
 map <leader>r :e<cr>
 "   ~source current file
@@ -444,11 +448,6 @@ let g:ale_sign_warning = ''
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-"   ~change color of symbols
-" augroup aleTheme
-"   autocmd!
-"   autocmd ColorScheme * hi ALEWarningSign guifg=#e5c07b
-" augroup END
 
 
 "   Settings | Buftabline
@@ -480,50 +479,33 @@ map <leader>ct :ColorToggle<cr>
 ""   ~my defined mappings
 "nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<cr>
 "nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<cr>
+"
+"
 
 
-""    Settings | Deoplete
-""   ~use tern_for_vim.
-"let g:tern#command = ["tern"]
-"let g:tern#arguments = ["--persistent"]
-""   ~enable at startup
-"let g:deoplete#enable_at_startup = 1
-""   ~use smartcase.
-"let g:deoplete#enable_smart_case = 1
-""   ~but don't populate unless I say so
-"let g:deoplete#disable_auto_complete = 0
-""   ~do not select a match in the menu by default, I choose it
-"set completeopt+=noselect
-""   ~show extra information about selected completion in preview window
-"set completeopt-=preview
-""   ~close preview window after completion is done
-"autocmd CompleteDone * pclose
-
-"call deoplete#custom#set('omni',          'mark', '⌾')
-"call deoplete#custom#set('ternjs',        'mark', '')
-"call deoplete#custom#set('jedi',          'mark', '')
-"call deoplete#custom#set('vim',           'mark', '⌁')
-"call deoplete#custom#set('neosnippet',    'mark', '⌘')
-"call deoplete#custom#set('tag',           'mark', '⌦')
-"call deoplete#custom#set('around',        'mark', '↻')
-"call deoplete#custom#set('buffer',        'mark', 'ℬ')
-"call deoplete#custom#set('tmux-complete', 'mark', '⊶')
-"call deoplete#custom#set('syntax',        'mark', '♯')
-
-"call deoplete#custom#set('vim',           'rank', 630)
-"call deoplete#custom#set('ternjs',        'rank', 620)
-"call deoplete#custom#set('jedi',          'rank', 610)
-"call deoplete#custom#set('omni',          'rank', 600)
-"call deoplete#custom#set('neosnippet',    'rank', 510)
-"call deoplete#custom#set('member',        'rank', 500)
-"call deoplete#custom#set('file_include',  'rank', 420)
-"call deoplete#custom#set('file',          'rank', 410)
-"call deoplete#custom#set('tag',           'rank', 400)
-"call deoplete#custom#set('around',        'rank', 330)
-"call deoplete#custom#set('buffer',        'rank', 320)
-"call deoplete#custom#set('dictionary',    'rank', 310)
-"call deoplete#custom#set('tmux-complete', 'rank', 300)
-"call deoplete#custom#set('syntax',        'rank', 200)
+"    Settings | Deoplete
+"   ~use tern_for_vim.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+set pumheight=10
+set completeopt=longest,menuone
+"   ~enable at startup
+let g:deoplete#enable_at_startup = 1
+"   ~disable auto completions
+let g:deoplete#disable_auto_complete = 0
+"   ~use smartcase.
+let g:deoplete#enable_smart_case = 1
+"   ~custom markers, aka 'icons'
+call deoplete#custom#set('omni',          'mark', '⌾')
+call deoplete#custom#set('ternjs',        'mark', '')
+call deoplete#custom#set('jedi',          'mark', '')
+call deoplete#custom#set('vim',           'mark', '⌁')
+call deoplete#custom#set('neosnippet',    'mark', '⌘')
+call deoplete#custom#set('tag',           'mark', '⌦')
+call deoplete#custom#set('around',        'mark', '↻')
+call deoplete#custom#set('buffer',        'mark', 'ℬ')
+call deoplete#custom#set('tmux-complete', 'mark', '⊶')
+call deoplete#custom#set('syntax',        'mark', '♯')
 
 
 "   Settings | Easy Motion
@@ -546,7 +528,9 @@ nnoremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 "   Settings | FZF
 "   ~set runtime path
 set rtp+=~/.fzf
-"   ~note: use <ctrl-c> to exit the below
+"   ~set options
+let $FZF_DEFAULT_OPS .= ' --no-height'
+"   ~NOTE: use <ctrl-c> to exit the below
 "   ~set default usage.
 nnoremap <C-p> :FZF<cr>
 "   ~look in project files not node modules etc.
@@ -640,6 +624,10 @@ nnoremap <C-c> :call multiple_cursors#quit()<CR>
 command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
 
 
+"   Settings | Python Syntax
+"   ~enable all
+let python_highlight_all = 1
+
 
 "   Settings | Tern
 "   ~if it exists
@@ -656,18 +644,31 @@ endif
 let g:vimfiler_as_default_explorer = 1
 "   ~add devicons to vimfilers
 let g:webdevicons_enable_vimfiler = 1
-"   ~use default statusline
-let g:vimfiler_force_overwrite_statusline = 0
-"   ~enable file operations
+"   ~modify indentation
+let g:vimfiler_tree_indentation = 2
+"   ~default tree leaf icon
+let g:vimfiler_tree_leaf_icon = ""
+"   ~default tree opened icon
+let g:vimfiler_tree_opened_icon = ""
+"   ~default tree closed icon
+let g:vimfiler_tree_closed_icon = ""
+"   ~change default directory
+let g:vimfiler_enable_auto_cd = 1
+"   ~default profile
 call vimfiler#custom#profile('default', 'context', {
-      \ 'safe' : 0
+      \ 'safe' : 1,
+      \ '-auto-cd' : 1
       \ })
 "   ~don't hide dotfiles
 let g:vimfiler_ignore_pattern = []
 "   ~define custom hotkeys
+"nnoremap <leader>f :VimFiler -winwidth=35 -toggle -split -simple -auto-cd -status -no-quit<cr>
 nnoremap <leader>f :VimFiler<cr>
+"   ~because muscle memory..
+nnoremap <leader>nt :VimFilerExplorer<cr>
 "   ~don't use ctrl-l in vimfiler
 autocmd FileType vimfiler nunmap <buffer> <C-l>
+
 
 
 
@@ -696,7 +697,7 @@ colorscheme atomtheif
 "   endif
 " "endif
 " "   ~enable cursorline
-set cursorline
+set nocursorline
 " "   ~enable terminal italics
 " let g:onedark_terminal_italics = 1
 " "   ~enable terminal 256 colors
@@ -722,6 +723,7 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['html'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
 "let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['js'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['json'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['php'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['md'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['scss'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['sql'] = ''
@@ -756,11 +758,14 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ds_store'] = ''
 
 
 "   UI | Statusline
+"   ~enable it
+set laststatus=2
+"   ~define function for filename
 function! FileName()
   let ext=tolower(expand("%:e"))
   return ext
 endfunction
-set numberwidth=6
+"set numberwidth=4
 set statusline=
 "set statusline+=\ %04l
 "set statusline+=\ •\ %3c
@@ -768,7 +773,7 @@ set statusline=
 "set statusline+=\ \ \ %.30F\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ •\ %t\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ \ \ %t
-set statusline+=\ \ \ %.40F
+set statusline+=\ %.40F
 set statusline+=\ •\ %l
 set statusline+=:\%p%%
 "set statusline+=:\%-4c
@@ -785,7 +790,7 @@ set statusline+=\ \
 
 "   UI | Syntax
 "   ~no syntax highlight past 80 columns
-"   set synmaxcol=120
+set synmaxcol=120
 "   ~change bg color after 80 columns
 "execute "set colorcolumn=" . join(range(81,335), ',')
 "   ~enable colorcolumn
