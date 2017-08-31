@@ -22,6 +22,7 @@
 "         Modes
 "         Omnifunc
 "         Search
+"         Syntax
 "         Tabs & Indents
 "         Terminal
 "         Text
@@ -53,6 +54,7 @@
 "         Python Syntax
 "         Tern
 "         VimFiler
+"         vim-jsx
 "     UI
 "         ColorScheme
 "         Devicons
@@ -85,7 +87,6 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('mattn/emmet-vim')
   "call dein#add('roxma/nvim-completion-manager')
   "call dein#add('roxma/nvim-cm-tern', {'build': 'npm install'})
-  "
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-jedi')
   call dein#add('ternjs/tern_for_vim', { 'build': 'npm install' })
@@ -286,7 +287,7 @@ augroup END
 
 "   General | Modes
 "   ~don't use nomatchparen
-let loaded_matchparen = 1
+"   let loaded_matchparen = 0
 
 "   General | Modes
 "   ~get out of insert mode
@@ -302,7 +303,9 @@ augroup omnifuncs
   autocmd!
   autocmd FileType css,sass,scss setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType javascript setlocal omnifunc=tern#Complete
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 augroup end
 
@@ -315,6 +318,10 @@ set smartcase
 set nohlsearch
 "   ~show preview window when substituting string
 "set inccommand=split
+
+
+"   General | Syntax
+"   ~use javascript as jsx
 
 
 "   General | Tabs & Indents
@@ -409,6 +416,8 @@ vnoremap <C-c> "*y<cr>
 "   Hotkeys | Editing
 "   ~go to end of line in insert mode
 inoremap <c-e> <esc>A
+"   ~auto complete file path using omnifunc
+inoremap <c-f> <c-x><c-f>
 
 
 "   Hotkeys | Tabs & Indents
@@ -479,22 +488,19 @@ map <leader>ct :ColorToggle<cr>
 ""   ~my defined mappings
 "nnoremap <silent> <C-d> :call comfortable_motion#flick(100)<cr>
 "nnoremap <silent> <C-u> :call comfortable_motion#flick(-100)<cr>
-"
-"
 
 
 "    Settings | Deoplete
-"   ~use tern_for_vim.
-let g:tern#command = ["tern"]
-let g:tern#arguments = ["--persistent"]
+"   ~set menu height and options
 set pumheight=10
 set completeopt=longest,menuone
 "   ~enable at startup
 let g:deoplete#enable_at_startup = 1
 "   ~disable auto completions
 let g:deoplete#disable_auto_complete = 0
-"   ~use smartcase.
-let g:deoplete#enable_smart_case = 1
+"   ~use tab and shift tab to cycle through completion menu
+inoremap <expr><TAB> pumvisible() ? "\<c-n>" : "\<TAB>"
+inoremap <expr><S-TAB> pumvisible() ? "\<c-p>" : "\<S-TAB>"
 "   ~custom markers, aka 'icons'
 call deoplete#custom#set('omni',          'mark', '⌾')
 call deoplete#custom#set('ternjs',        'mark', '')
@@ -606,6 +612,10 @@ nnoremap <C-c> :call multiple_cursors#quit()<CR>
 ""autocmd BufEnter * call s:syncTree()
 
 
+"   Settings | Neoformat
+let g:neoformat_enabled_javascript = ['prettier']
+
+
 "   Settings | Nvim Completion Manager
 "   ~don't be rude
 "let g:cm_auto_popup = 0
@@ -630,13 +640,15 @@ let python_highlight_all = 1
 
 
 "   Settings | Tern
-"   ~if it exists
-if exists('g:plugs["tern_for_vim"]')
-  let g:tern_show_argument_hints = 'on_hold'
-  let g:tern_show_signature_in_pum = 1
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+""   ~if it exists
+"if exists('g:plugs["tern_for_vim"]')
+"  let g:tern_show_argument_hints = 'on_hold'
+"  let g:tern_show_signature_in_pum = 1
 
-  au FileType javascript setlocal omnifunc=tern#Complete
-endif
+"  autocmd FileType javascript setlocal omnifunc=tern#Complete
+"endif
 
 
 "   Settings | VimFiler
@@ -670,6 +682,11 @@ nnoremap <leader>nt :VimFilerExplorer<cr>
 autocmd FileType vimfiler nunmap <buffer> <C-l>
 
 
+"   Settings | vim-jsx
+"   ~doesn't require '.jsx' extension
+let g:jsx_ext_required = 0
+
+
 
 
 "--------------------------------------"
@@ -697,7 +714,7 @@ colorscheme atomtheif
 "   endif
 " "endif
 " "   ~enable cursorline
-set nocursorline
+set cursorline
 " "   ~enable terminal italics
 " let g:onedark_terminal_italics = 1
 " "   ~enable terminal 256 colors
