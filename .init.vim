@@ -9,18 +9,23 @@
 "     Commands
 "         Files
 "         Syntax
+"         Terminal
 "         Text
 "         Vimrc
 "     Functions
 "         Syntax
 "     General
 "         Buffers
+"         Build
 "         Editing
 "         Files
+"         Folding
 "         Help
+"         Intro
 "         MatchParen
 "         Modes
 "         Omnifunc
+"         Rendering
 "         Search
 "         Syntax
 "         Tabs & Indents
@@ -33,9 +38,10 @@
 "         Copy & Paste
 "         Editing
 "         Files
+"         Selection
+"         Searching
 "         Tabs & Indents
 "         Time
-"         Selection
 "     Settings
 "         Ale
 "         Buftabline
@@ -51,6 +57,7 @@
 "         Neoformat
 "         Nvim Completion Manager
 "         OpenBrowser
+"         Pulse
 "         Python Syntax
 "         Tern
 "         VimFiler
@@ -58,10 +65,11 @@
 "     UI
 "         ColorScheme
 "         Devicons
+"         Font
+"         Scrollbar
 "         Statusline
 "         Syntax
 "         Theme
-
 
 
 
@@ -71,15 +79,15 @@
 
 "   Plugins | Initialize
 if &compatible
-  set nocompatible               " Be iMproved
+  set nocompatible
 endif
 "   ~required:
-set rtp+=/Users/aas/.cache/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=$HOME/.cache/dein/repos/github.com/Shougo/dein.vim
 "   ~required:
-if dein#load_state('/Users/aas/.cache/dein')
-  call dein#begin('/Users/aas/.cache/dein')
+if dein#load_state('$HOME/.cache/dein')
+  call dein#begin('$HOME/.cache/dein')
   "   ~let dein manage dein
-  call dein#add('/Users/aas/.cache/dein/repos/github.com/Shougo/dein.vim')
+  call dein#add('$HOME/.cache/dein/repos/github.com/Shougo/dein.vim')
   "   ~buffers
   call dein#add('schickling/vim-bufonly')
   "   ~completion
@@ -113,6 +121,7 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('Shougo/unite.vim')
   "call dein#add('yuttie/comfortable-motion.vim')
   "   ~searching
+  call dein#add('brooth/far.vim')
   call dein#add('easymotion/vim-easymotion')
   call dein#add('haya14busa/incsearch-easymotion.vim')
   call dein#add('haya14busa/incsearch-fuzzy.vim')
@@ -120,7 +129,8 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('junegunn/fzf', { 'build': './install', 'rtp': '' })
   call dein#add('junegunn/fzf.vim', { 'depends': 'fzf' })
   call dein#add('rking/ag.vim')
-  call dein#add('brooth/far.vim')
+  "call dein#add('inside/vim-search-pulse')
+  "call dein#add('unblevable/quick-scope')
   "   ~syntax
   call dein#add('StanAngeloff/php.vim')
   "call dein#add('cakebaker/scss-syntax.vim')
@@ -132,16 +142,18 @@ if dein#load_state('/Users/aas/.cache/dein')
   call dein#add('plasticboy/vim-markdown')
   call dein#add('rust-lang/rust.vim')
   call dein#add('stephpy/vim-yaml')
+  call dein#add('tpope/vim-liquid')
   "   ~theme
-  call dein#add('asilvadesigns/atom-theif')
-  call dein#add('mhartington/oceanic-next')
-  call dein#add('tyrannicaltoucan/vim-deep-space')
-  call dein#add('lifepillar/vim-solarized8')
-  call dein#add('ap/vim-buftabline')
-  call dein#add('joshdick/onedark.vim')
-  call dein#add('ryanoasis/vim-devicons')
   "call dein#add('tiagofumo/vim-nerdtree-syntax-highlight')
   call dein#add('Yggdroot/indentLine')
+  call dein#add('ap/vim-buftabline')
+  call dein#add('asilvadesigns/atom-theif')
+  call dein#add('joshdick/onedark.vim')
+  call dein#add('lifepillar/vim-solarized8')
+  call dein#add('mhartington/oceanic-next')
+  call dein#add('mhinz/vim-startify')
+  call dein#add('ryanoasis/vim-devicons')
+  call dein#add('tyrannicaltoucan/vim-deep-space')
   "   ~tmux
   call dein#add('christoomey/vim-tmux-navigator')
   "   ~whitespace
@@ -172,17 +184,21 @@ endif
 
 "   Commands | Files
 "   ~helper commands to make new files
-command! Newhtml execute 'vnew' | execute 'Sethtml'
-command! Newcss execute 'vnew' | execute 'Setcss'
-command! Newscss execute 'vnew' | execute 'Setscss'
-command! Newjs execute 'vnew' | execute 'Setjs'
+command! NewHtml execute 'vnew' | execute 'SetHtml'
+command! NewCss execute 'vnew' | execute 'SetCss'
+command! NewScss execute 'vnew' | execute 'SetScss'
+command! NewJs execute 'vnew' | execute 'SetJs'
+command! NewJson execute 'vnew' | execute 'SetJson'
 "   ~set vim current directory to current buffer directory
 command! GoBufferDir execute ':lcd %:p:h'
+"   ~just some custom aliases
 command! GoDesktop execute ':cd ~/Desktop'
 command! GoGithub execute ':cd ~/Desktop/Github'
 command! GoHome execute ':cd ~'
 command! GoProjects execute ':cd ~/Desktop/Projects'
 command! GoSites execute ':cd ~/Sites'
+"   ~useful
+command! Finder execute ':! open .'
 
 
 "   Commands | Text
@@ -194,13 +210,19 @@ command! MakeAllTitleCase execute ':%s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g'
 command! WrapToggle execute ':set wrap! linebreak!'
 
 
+"   Commands | Terminal
+"   ~quickly split terminal
+command! TermSplit execute 'vsplit | term'
+command! SplitTerm execute 'vsplit | term'
+
 
 "   Commands | Syntax
 "   ~helper commands to set syntax
-command! Sethtml execute 'set ft=html'
-command! Setcss execute 'set ft=css'
-command! Setscss execute 'set ft=scss'
-command! Setjs execute 'set ft=javascript'
+command! SetHtml execute 'set ft=html'
+command! SetCss execute 'set ft=css'
+command! SetScss execute 'set ft=scss'
+command! SetJs execute 'set ft=javascript'
+command! SetJson execute 'set ft=json'
 
 
 "   Commands | Vimrc
@@ -247,6 +269,12 @@ endfunc
 "   General
 
 
+"   General | Build
+"   ~build
+"let g:python3_host_prog = '/usr/local/bin/python3'
+
+
+
 "   General | Buffers
 "   ~allow switching through modified buffers
 set hidden
@@ -267,7 +295,8 @@ set virtualedit=all
 nnoremap j gj
 nnoremap k gk
 "   ~show relative line numbers
-set rnu
+set rnu nonu
+"set norelativenumber
 "   ~no end of line on new files
 set noeol
 
@@ -277,6 +306,10 @@ set noeol
 set noswapfile
 
 
+"   General | Folding
+"   ~show folds
+set foldcolumn=0
+
 "   General | Help
 "   ~always open help docs to the right with numbers : )
 augroup vimrc_help
@@ -285,9 +318,15 @@ augroup vimrc_help
 augroup END
 
 
-"   General | Modes
+"   General | Intro
+"   ~don't show intro message
+set shortmess=atI
+
+
+"   General | MatchParen
 "   ~don't use nomatchparen
 "   let loaded_matchparen = 0
+
 
 "   General | Modes
 "   ~get out of insert mode
@@ -310,12 +349,17 @@ augroup omnifuncs
 augroup end
 
 
+"   General | Rendering
+"   ~don't redraw unless you have to
+set nolazyredraw
+
+
 "   General | Search
 "   ~case intelligent search
 set ignorecase
 set smartcase
 "   ~no highlight search result
-set nohlsearch
+set hlsearch
 "   ~show preview window when substituting string
 "set inccommand=split
 
@@ -337,7 +381,7 @@ set smartindent
 
 "   General | Terminal
 "   ~set default shell
-set shell=/bin/zsh
+set shell=/usr/local/bin/fish
 "   ~quickly get out of terminal mode
 tnoremap kj <C-\><C-n>
 "   ~hide numberlines
@@ -420,6 +464,19 @@ inoremap <c-e> <esc>A
 inoremap <c-f> <c-x><c-f>
 
 
+"   Hotkeys | Selection
+"   ~quickly select all
+map <leader>va ggVG
+
+
+"   Hotkeys | Searching
+"   ~search and replace word under cursor (,*) - thanks Paul Irish
+nnoremap <leader>* :%s/\<<C-r><C-w>\>//<Left>
+vnoremap <leader>* "hy:%s/\V<C-r>h//<left>
+"   ~clear last searched item
+nnoremap <leader>no :noh<cr>
+
+
 "   Hotkeys | Tabs & Indents
 "   ~behave as expected
 nnoremap <Tab> >>_
@@ -430,12 +487,8 @@ vnoremap <S-Tab> <gv
 
 
 "   Hotkeys | Time
+"   ~enter current time like a smooth criminal..
 inoremap <special> <F3> <c-r>=strftime('%c')<CR>
-
-
-"   Hotkeys | Selection
-"   ~quickly select all
-map <leader>va ggVG
 
 
 
@@ -525,8 +578,6 @@ function! s:config_easyfuzzymotion(...) abort
         \   'is_stay': 1
         \ }), get(a:, 1, {}))
 endfunction
-"   ~use default mapping for f
-nnoremap <leader>f <Plug>(easymotion-bd-f)
 "   ~sexy search with space
 nnoremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 
@@ -535,7 +586,26 @@ nnoremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 "   ~set runtime path
 set rtp+=~/.fzf
 "   ~set options
-let $FZF_DEFAULT_OPS .= ' --no-height'
+"let g:fzf_colors =
+"\ { 'fg':      ['fg', 'Normal'],
+  "\ 'bg':      ['bg', 'Normal'],
+  "\ 'hl':      ['fg', 'Comment'],
+  "\ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  "\ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  "\ 'hl+':     ['fg', 'Statement'],
+  "\ 'info':    ['fg', 'PreProc'],
+  "\ 'prompt':  ['fg', 'Conditional'],
+  "\ 'pointer': ['fg', 'Exception'],
+  "\ 'marker':  ['fg', 'Keyword'],
+  "\ 'spinner': ['fg', 'Label'],
+  "\ 'header':  ['fg', 'Comment'] }
+
+"let $FZF_DEFAULT_OPS .= '
+      "\--color=bg+:#20242b,bg:#20242b
+      "\--color=hl+:#61afef,hl:#61afef
+      "\--color=fg+:#abb2bf,fg:#636d83
+      "\--color=info:#98c379,prompt:#98c379,spinner:#98c379,pointer:#e06c75,marker:#61afef'
+
 "   ~NOTE: use <ctrl-c> to exit the below
 "   ~set default usage.
 nnoremap <C-p> :FZF<cr>
@@ -614,6 +684,8 @@ nnoremap <C-c> :call multiple_cursors#quit()<CR>
 
 "   Settings | Neoformat
 let g:neoformat_enabled_javascript = ['prettier']
+let g:neoformat_enabled_css = ['prettier']
+"let g:neoformat_enabled_javascript = ['js-beautify']
 
 
 "   Settings | Nvim Completion Manager
@@ -632,6 +704,13 @@ let g:neoformat_enabled_javascript = ['prettier']
       "\]
 "   ~command to current file in browser
 command! OpenBrowserCurrent execute "OpenBrowser" "file:///" . expand('%:p:gs?\\?/?')
+
+
+"  "    Settings | Python Syntax
+"  "   ~only pulse on pattern
+"  let g:vim_search_pulse_mode = 'pattern'
+"  "   ~let's make it a bit faster
+"  let g:vim_search_pulse_duration = 100
 
 
 "   Settings | Python Syntax
@@ -669,17 +748,21 @@ let g:vimfiler_enable_auto_cd = 1
 "   ~default profile
 call vimfiler#custom#profile('default', 'context', {
       \ 'safe' : 1,
-      \ '-auto-cd' : 1
+      \ 'auto-cd' : 1
       \ })
 "   ~don't hide dotfiles
 let g:vimfiler_ignore_pattern = []
 "   ~define custom hotkeys
 "nnoremap <leader>f :VimFiler -winwidth=35 -toggle -split -simple -auto-cd -status -no-quit<cr>
-nnoremap <leader>f :VimFiler<cr>
+nnoremap <leader>f :VimFilerBufferDir <cr>
 "   ~because muscle memory..
-nnoremap <leader>nt :VimFilerExplorer<cr>
+"nnoremap <leader>nt :VimFilerExplorer<cr>
+nnoremap <leader>nt :VimFilerBufferDir -explorer<cr>
 "   ~don't use ctrl-l in vimfiler
-autocmd FileType vimfiler nunmap <buffer> <C-l>
+augroup vimfiler
+  autocmd!
+  autocmd FileType vimfiler nunmap <buffer> <C-l>
+augroup END
 
 
 "   Settings | vim-jsx
@@ -697,6 +780,11 @@ let g:jsx_ext_required = 0
 if (has("nvim"))
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 endif
+
+set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+      \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+      \,sm:block-blinkwait175-blinkoff150-blinkon175
+
 
 if (has("termguicolors"))
   set termguicolors
@@ -774,6 +862,21 @@ let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ds_store'] = ''
       "\]
 
 
+"   UI | Font
+"   ~set default typeface
+"set guifont=OperatorMonoSSm_Nerd_Font:h15
+"   ~set lineheight
+"set linespace=5
+
+
+"   UI | Scrollbar
+"   ~disable left and right scrollbars
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+
+
 "   UI | Statusline
 "   ~enable it
 set laststatus=2
@@ -790,15 +893,17 @@ set statusline=
 "set statusline+=\ \ \ %.30F\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ •\ %t\ %{WebDevIconsGetFileTypeSymbol()}
 "set statusline+=\ \ \ %t
-set statusline+=\ %.40F
-set statusline+=\ •\ %l
-set statusline+=:\%p%%
+"set statusline+=\ \ %{toupper(mode())}
+set statusline+=\ %02p%%
+set statusline+=\:\%04l
+"set statusline+=\ •\ %l
+set statusline+=\ •\ %.40F
 "set statusline+=:\%-4c
 "set statusline+=%#ErrorMsg#
 set statusline+=\ %{getbufvar(bufnr('%'),'&mod')?'':''}
 "set statusline+=%*
 set statusline+=%=
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
+"set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 "set statusline+=\ \|\ %{&fileformat}
 "set statusline+=\ \|\ %y
 set statusline+=\ %y
@@ -807,60 +912,12 @@ set statusline+=\ \
 
 "   UI | Syntax
 "   ~no syntax highlight past 80 columns
-set synmaxcol=120
+set synmaxcol=180
 "   ~change bg color after 80 columns
 "execute "set colorcolumn=" . join(range(81,335), ',')
 "   ~enable colorcolumn
 
 
-" "   UI | Theme
-" "   ~no borders between panes
+"   UI | Theme
+"   ~no borders between panes
 set fillchars=""
-" "   ~color the tildes so it looks like none
-" "hi EndOfBuffer guifg=#282C34 ctermfg=235
-" "   ~file colors can use 5c6370 or 636d83
-" "hi NERDTreeFile guifg=#636d83 gui=NONE
-" "   ~folder colors
-" "hi NERDTreeDir guifg=#abb2bf gui=NONE
-" "   ~slash after folder names
-" "hi NERDTreeDirSlash guifg=#282c34 gui=NONE
-" "   ~folder open icon color
-" "hi NERDTreeOpenable guifg=#abb2bf gui=NONE
-" "   ~folder close icon color
-" "hi NERDTreeClosable guifg=#abb2bf gui=NONE
-" "   ~current working directory
-" "hi NERDTreeCWD guifg=#636d83 gui=NONE
-" "   ~buffer splits
-" "set fillchars+=vert:
-" set fillchars=
-" "   ~color of pane split - use 282c34 or 20242b
-" hi VertSplit guibg=#282c34
-" "   ~BUFTABLINE
-" "hi BufTabLineCurrent guibg=#282c34 guifg=#6494ed
-" "hi BufTabLineActive guibg=#282c34 guifg=#3f4658
-" "hi BufTabLineHidden guibg=#282c34 guifg=#3f4658
-" "hi BufTabLineFill guibg=#282c34 guifg=#3f4658
-" hi BufTabLineCurrent guibg=#2a60c4 guifg=#ffffff
-" hi BufTabLineActive guibg=#4d80df guifg=#ffffff
-" hi BufTabLineHidden guibg=#4d80df guifg=#ffffff
-" hi BufTabLineFill guibg=#4d80df guifg=#ffffff
-" "   ~FZF
-" function! s:fzf_statusline()
-"   " Override statusline as you like
-"   highlight fzf1 guifg=#61afef guibg=#20242b
-"   highlight fzf2 guifg=#61afef guibg=#20242b
-"   highlight fzf3 guifg=#61afef guibg=#20242b
-"   setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
-" endfunction
-" autocmd! User FzfStatusLine call <SID>fzf_statusline()
-" "   ~use Italics on comments and html/xml attributes
-" hi Comment gui=italic cterm=italic
-" hi htmlArg gui=italic cterm=italic
-" hi xmlAttrib gui=italic cterm=italic
-" "   ~STATUSLINE - use 282c34 or 20242b
-" hi StatusLine guibg=#282c34
-" hi StatusLineNC guibg=#282c34 guifg=#3f4658
-" hi LineNr guifg=#3f4658
-" hi ErrorMsg guibg=#282c34
-" "   ~MATCH PARENS
-" "hi MatchParen guibg=#e06c75 guifg=#20242b
