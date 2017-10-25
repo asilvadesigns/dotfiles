@@ -22,9 +22,11 @@
 "         Folding
 "         Help
 "         Intro
+"         Invisible Chars
 "         MatchParen
 "         Menu
 "         Modes
+"         Mouse
 "         Omnifunc
 "         Rendering
 "         Search
@@ -66,7 +68,8 @@
 "         Tern
 "         VimFiler
 "         vim-jsx
-"         vim-matchparen
+"         vim-markdown
+"         vim-parenmatch
 "     UI
 "         ColorScheme
 "         Devicons
@@ -113,8 +116,9 @@ if dein#load_state('$HOME/.cache/dein')
   call dein#add('terryma/vim-multiple-cursors')
   call dein#add('tommcdo/vim-exchange')
   call dein#add('tpope/vim-surround')
+  call dein#add('sickill/vim-pasta')
   "   ~files
-  call dein#add('iamcco/markdown-preview.vim')
+  call dein#add('euclio/vim-markdown-composer', { 'build': 'cargo build --release' })
   call dein#add('tyru/open-browser.vim')
   "   ~linting
   call dein#add('sbdchd/neoformat')
@@ -248,23 +252,6 @@ function! SynStack()
 endfunc
 
 
-"   Functions | NERDTree
-"""   ~check if NERDTree is open or active
-""function! s:isNERDTreeOpen()
-""  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-""endfunction
-""
-"""   ~Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-"""   ~file, and we're not in vimdiff
-""function! s:syncTree()
-""  if &modifiable && s:isNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-""    NERDTreeFind
-""    wincmd p
-""    return
-""  endif
-""endfunction
-
-
 
 
 "--------------------------------------"
@@ -298,7 +285,6 @@ nnoremap k gk
 "   ~show relative line numbers
 "set rnu nu
 set rnu
-"set nu
 "   ~no end of line on new files
 set noeol
 
@@ -325,6 +311,12 @@ augroup END
 set shortmess=atI
 
 
+"   General | Invisible Chars
+"   ~set defaults for invisible chars
+set list
+set listchars=tab:‣\ ,space:·,trail:·,eol:¬
+
+
 "   General | MatchParen
 "   ~don't use built in matchparen.. it's slow
 let loaded_matchparen = 0
@@ -344,18 +336,23 @@ inoremap kj <esc>
 nnoremap ; :
 
 
-"   General | Omnifunc
-"   ~set omnifunc defaults | NOTE: ternjs overrides js later
-augroup omnifuncs
-  autocmd!
-  autocmd FileType css,sass,scss setlocal omnifunc=csscomplete#CompleteCSS
-  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
-  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  "autocmd FileType javascript setlocal omnifunc=tern#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-augroup end
+"   General | Mouse
+"   ~use the mouse
+"set mouse=a
+
+
+""   General | Omnifunc
+""   ~set omnifunc defaults | NOTE: ternjs overrides js later
+"augroup omnifuncs
+"  autocmd!
+"  autocmd FileType css,sass,scss setlocal omnifunc=csscomplete#CompleteCSS
+"  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+"  autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+"  "autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+"  "autocmd FileType javascript setlocal omnifunc=tern#CompleteJS
+"  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+"  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+"augroup end
 
 "set omnifunc=LanguageClient#complete
 "set completefunc=LanguageClient#complete
@@ -394,12 +391,13 @@ set smartindent
 
 "   General | Terminal
 "   ~set default shell
-" set shell=/usr/local/bin/fish
 set shell=/bin/zsh
 "   ~quickly get out of terminal mode
 tnoremap kj <C-\><C-n>
 "   ~hide numberlines
 au TermOpen * setlocal nu norelativenumber
+"   ~auto enter insert mode with terminal selected
+au BufWinEnter,WinEnter term://* startinsert
 
 
 "   General | Text
@@ -523,8 +521,6 @@ let g:ale_sign_column_always=1
 "   ~change default symbols
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
-"let g:ale_sign_error = '•'
-"let g:ale_sign_warning = ''
 "   ~custom error message
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
@@ -533,12 +529,13 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_linters = {
       \ 'html': ['htmlhint'],
       \ 'liquid': ['htmlhint'],
-      \ 'javascript': ['prettier'],
-      \ 'javascript.jsx': ['prettier'],
-      \ 'jsx': ['prettier'],
-      \ 'json': ['prettier'],
-      \ 'scss': ['prettier'],
-      \ 'typescript': ['prettier'],
+      \ 'javascript': ['eslint'],
+      \ 'javascript.jsx': ['eslint'],
+      \ 'jsx': ['eslint'],
+      \ 'json': ['jsonlint'],
+      \ 'css': ['stylelint'],
+      \ 'scss': ['stylelint'],
+      \ 'typescript': ['eslint'],
       \ }
 "   ~don't underline errors/warning
 let g:ale_set_highlights = 0
@@ -587,7 +584,10 @@ endfunction"}}}
 inoremap <expr><S-TAB> pumvisible() ? "\<c-p>" : "\<S-TAB>"
 "
 ""   ~custom markers, aka 'icons'
-"call deoplete#custom#set('omni',          'mark', '⌾')
+call deoplete#custom#set('LanguageClient', 'rank', 9999)
+call deoplete#custom#set('omni', 'rank', 9000)
+
+call deoplete#custom#set('LanguageClient', 'mark', '')
 "call deoplete#custom#set('ternjs',        'mark', '')
 "call deoplete#custom#set('jedi',          'mark', '')
 "call deoplete#custom#set('vim',           'mark', '⌁')
@@ -627,9 +627,8 @@ nnoremap <silent><expr> <Space>/ incsearch#go(<SID>config_easyfuzzymotion())
 set rtp+=~/.fzf
 "   ~set options
 let $FZF_DEFAULT_OPTS .= ' --no-height'
-
 "   ~NOTE: use <ctrl-c> to exit the below
-""   ~smart - uses GFiles if we're in git repo
+"   ~smart - uses GFiles if we're in git repo
 "nnoremap <C-p> :ProjectFiles<cr>
 "   ~set default usage.
 nnoremap <C-p> :Files<cr>
@@ -651,8 +650,6 @@ imap <c-f><c-l> <plug>(fzf-complete-line)
 
 
 "   Settings | Language Server
-"   ~defaults for start language servers
-let g:LanguageClient_autoStart = 1
 "   ~defaults for diagnostics
 let g:LanguageClient_diagnosticsDisplay = {
       \   1: {
@@ -694,6 +691,9 @@ let g:LanguageClient_serverCommands = {
       \ 'scss': ['css-languageserver', '--stdio'],
       \ }
 
+"   ~defaults for start language servers
+let g:LanguageClient_autoStart = 1
+
 "   ~always keep the signcolumn open!!
 augroup LanguageClient_config
   autocmd!
@@ -703,10 +703,9 @@ augroup END
 
 
 "   Settings | Markdown
-"   ~set path to chrome
-let g:mkdp_path_to_chrome = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
-"   ~don't close on switch to different buffer
-let g:mkdp_auto_close = 0
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
 
 
 "   Settings | Multiple Cursors
@@ -723,8 +722,8 @@ nnoremap <C-c> :call multiple_cursors#quit()<CR>
 
 "   Settings | Neoformat
 let g:neoformat_enabled_css = ['prettier']
-let g:neoformat_enabled_html = ['html-beautify']
-let g:neoformat_enabled_liquid = ['html-beautify']
+let g:neoformat_enabled_html = ['prettydiff']
+let g:neoformat_enabled_liquid = ['prettydiff']
 let g:neoformat_enabled_javascript = ['prettier']
 let g:neoformat_enabled_json = ['prettier']
 let g:neoformat_enabled_typescript = ['prettier']
@@ -793,6 +792,11 @@ let g:jsx_ext_required = 0
 let g:parenmatch = 1
 
 
+"   Settings | vim-markdown
+"   ~no folding by default
+let g:vim_markdown_folding_disabled = 1
+
+
 
 
 "--------------------------------------"
@@ -855,8 +859,23 @@ function! FileName()
   let ext=tolower(expand("%:e"))
   return ext
 endfunction
+
+function! LinterStatus() abort
+  let l:counts = ale#statusline#Count(bufnr(''))
+
+  let l:all_errors = l:counts.error + l:counts.style_error
+  let l:all_non_errors = l:counts.total - l:all_errors
+
+  return printf(
+        \   ' %d  %d  ',
+        \   all_errors,
+        \   all_non_errors
+        \)
+endfunction
+
 "set numberwidth=4
 set statusline=
+set statusline+=\ \ \ %{LinterStatus()}
 "set statusline+=\ %04l
 "set statusline+=\ •\ %3c
 "set statusline+=\ •\ %3p%%
@@ -872,8 +891,12 @@ set statusline=
 set statusline+=\ %.40F
 "set statusline+=:\%-4c
 "set statusline+=%#ErrorMsg#
-set statusline+=\ %{getbufvar(bufnr('%'),'&mod')?'':''}
-"set statusline+=%*
+"set statusline+=\ %{getbufvar(bufnr('%'),'&mod')?'':'\ '}
+
+set statusline+=\ \ \ \%l
+set statusline+=\:
+set statusline+=\%c
+
 set statusline+=%=
 "set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
 "set statusline+=\ \|\ %{&fileformat}
@@ -883,7 +906,7 @@ set statusline+=\ %y
 
 "   UI | Syntax
 "   ~no syntax highlight past 80 columns
-set synmaxcol=100
+set synmaxcol=255
 "   ~change bg color after 80 columns
 "execute "set colorcolumn=" . join(range(81,335), ',')
 "   ~enable colorcolumn
